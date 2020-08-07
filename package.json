@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "A Vue.js project",
-  "author": "Sasha Zmts <sa.zmts@gmail.com>",
+  "author": "phongtran",
   "scripts": {
     "serve": "NODE_ENV=development vue-cli-service serve",
     "build": "vue-cli-service build",

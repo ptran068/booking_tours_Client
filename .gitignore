@@ -36,15 +36,12 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
-src/mixins/
-src/plugins/
 
 # TypeScript v1 declaration files
 typings/
 
 # Optional npm cache directory
 .npm
-src/components/user/
 
 # Optional eslint cache
 .eslintcache
@@ -66,8 +63,4 @@ yarn.lock
 .next
 
 dist
-.eslintrc.js 
-.editorconfig
 .idea/
-src/assets/
-.browserslistrc

@@ -6,7 +6,7 @@
         <router-view></router-view>
       </transition>
     </div>
-    <AppFooter v-if="!$isAdmin"></AppFooter>
+    <!-- <AppFooter v-if="!$isAdmin"></AppFooter> -->
   </v-app>
 </template>
 
