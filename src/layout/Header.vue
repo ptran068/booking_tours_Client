@@ -59,9 +59,9 @@
 </template>
 
 <script>
-import LoginDialog from '../components/user/Login';
-import { makeLogout } from "../services/auth.service";
-import { mapGetters } from 'vuex';
+import LoginDialog from '../components/user/Login'
+import { makeLogout } from '../services/auth.service'
+import { mapGetters } from 'vuex'
 
 export default {
 
@@ -69,27 +69,27 @@ export default {
     LoginDialog
   },
 
-  data() {
+  data () {
     return {
       makeLogout,
       loginDialogVisible: false,
-      defaultLoginDialogTab: 'login',
-    };
+      defaultLoginDialogTab: 'login'
+    }
   },
 
   computed: {
-    greeting() {
-      return `Hello ${this.$currentUser.email}`;
+    greeting () {
+      return `Hello ${this.$currentUser.email}`
     }
   },
 
   methods: {
-    openLoginDialog(isLogin) {
-      this.defaultLoginDialogTab = isLogin ? 'login' : 'register';
-      this.loginDialogVisible = true;
+    openLoginDialog (isLogin) {
+      this.defaultLoginDialogTab = isLogin ? 'login' : 'register'
+      this.loginDialogVisible = true
     },
-    ...mapGetters({ isAdmin: 'user/isAdmin'}),
-  },
+    ...mapGetters({ isAdmin: 'user/isAdmin' })
+  }
 }
 </script>
 

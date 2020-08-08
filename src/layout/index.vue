@@ -11,12 +11,12 @@
 </template>
 
 <script>
-import AppHeader from '../layout/Header.vue';
+import AppHeader from '../layout/Header.vue'
 
 export default {
   name: 'AppLayout',
   components: {
-    AppHeader,
+    AppHeader
   }
 }
 </script>

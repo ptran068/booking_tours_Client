@@ -2,7 +2,6 @@
 import HomePage from '../pages/Home.vue'
 import NotFoundPage from '../pages/NotFound.vue'
 
-
 import { DOMAIN_TITLE } from '../.env'
 
 export const routes = [

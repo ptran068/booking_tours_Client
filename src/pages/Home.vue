@@ -38,14 +38,14 @@ export default {
     }
   },
 
-  mounted() {
-    this.init();
+  mounted () {
+    this.init()
   },
 
   methods: {
-    async init() {
+    async init () {
 
-    },
+    }
   }
 }
 </script>

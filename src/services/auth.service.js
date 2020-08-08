@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import axios from 'axios'
 import $store from '../store'
 import $router from '../router'
@@ -21,6 +20,7 @@ export async function create ({ email, phone, password }) {
 
 export async function getUserByToken () {
   const token = getToken()
+  // eslint-disable-next-line no-undef
   const user = await request({ auth: true }).post(`${API_URL}/user/decode-token`, { token })
   return user
 }
