@@ -11,18 +11,55 @@
     <div class="pt-5 pb-5">{{findId.description}}</div>
     <hr>
     <div class="pt-5 pb-5">{{findId.policy}}</div>
-    <router-link :to="{ name: 'index'}" class="btn btn-primary text-light mt-5 mb-5" style="float: right;">Back</router-link>
-    <router-link :to="{ name: '#'}" class="btn btn-primary text-light mt-5 mb-5" >Book</router-link>
+    <div>
+      <button
+      class="btn btn-primary text-light mt-5 mb-5"
+      @click.stop="dialog = true"
+    >
+      Book tour
+        </button>
+        <v-dialog
+          v-model="dialog"
+          persistent max-width="600px"
+        >
+          <v-card>
+            <v-card-title class="headline">Chose date to start tour</v-card-title>
+            <v-card-text>
+              <v-container >
+                <label class="control-label" for="date">Date: </label>
+                <datepicker id="date" v-model="startat"></datepicker>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                text
+                @click="dialog = false"
+                class="btn btn-primary text-light mt-5 mb-5"
+                style="float: right;"
+              >
+                Cancel
+              </v-btn>
+              <router-link  @click="dialog = false" :to="{ name: '#'}" class="btn btn-primary text-light mt-5 mb-5">Book</router-link>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <router-link :to="{ name: 'index'}" class="btn btn-primary text-light mt-5 mb-5">Back</router-link>
+    </div>
   </div>
 </template>
-
 <script>
 import { data } from '../../services/data.service'
+import Datepicker from 'vuejs-datepicker'
 export default {
   name: 'Tours',
+  components: {
+    Datepicker
+  },
   data () {
     return {
-      tours: []
+      tours: [],
+      dialog: false
     }
   },
   async created () {
