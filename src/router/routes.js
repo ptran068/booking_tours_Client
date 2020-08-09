@@ -2,6 +2,7 @@
 import HomePage from '../pages/Home.vue'
 import TourDetail from '../components/tour/TourDetail.vue'
 import NotFoundPage from '../pages/NotFound.vue'
+import ReviewDetail from '../components/review/ReviewDetail.vue'
 
 import { DOMAIN_TITLE } from '../.env.js'
 
@@ -19,7 +20,12 @@ export const routes = [
     component: TourDetail,
     meta: { title: `${DOMAIN_TITLE} | home` }
   },
-
+  {
+    path: '/tour/review/:id',
+    name: 'review',
+    component: ReviewDetail,
+    meta: { title: `${DOMAIN_TITLE} | Review` }
+  },
   {
     path: '*',
     component: NotFoundPage,

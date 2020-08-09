@@ -11,10 +11,10 @@
     <div class="pt-5 pb-5">{{tour.description}}</div>
     <hr>
     <div class="pt-5 pb-5">{{tour.policy}}</div>
-    <div>
+    <!-- <div>
       <p class="d-inline mr-13">Rating: {{tour.avg_rating.score__avg}}</p>
       <button v-if="token" class="btn-sm btn-primary text-light d-inline">Rating</button>
-    </div>
+    </div> -->
     
     <div>
       <button
@@ -59,14 +59,19 @@
           </v-card>
         </v-dialog>
         <router-link :to="{ name: 'index'}" class="btn btn-primary text-light ml-5">Back</router-link>
+        <ReviewList v-bind:tour_id="tour.id"></ReviewList>
     </div>
   </div>
 </template>
 <script>
+import ReviewList from '../review/ReviewList'
 import { data } from '../../services/data.service'
 import { postBook } from '../../services/book.service'
 export default {
   name: 'Tours',
+    components: {
+    ReviewList
+  },
   data () {
     return {
       tour: '',
