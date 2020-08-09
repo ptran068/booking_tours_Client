@@ -2,9 +2,10 @@ import * as axios from 'axios'
 import { API_URL } from '../.env.js'
 import {options} from './headers'
 
-const getReviews = async function (tour_id) {
+const getReviews = async function (tour_id, page=1) {
   try {
-    const response = await axios.get(`${API_URL}/review/?tours_id=`+tour_id)
+    var offset = (page-1)*10
+    const response = await axios.get(`${API_URL}/review/?offset=${offset}&tours_id=`+tour_id)
     let reviews = parseList(response)
     return reviews.results
 

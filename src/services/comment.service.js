@@ -2,13 +2,12 @@ import * as axios from 'axios'
 import { API_URL } from '../.env.js'
 import { getToken } from './auth.service'
 
-const getComments = async function (review_id) {
+const getComments = async function (review_id, page=1) {
   try {
-
-    const response = await axios.get(`${API_URL}/comments/?review_id=` + review_id)
+    var offset=(page-1)*10
+    const response = await axios.get(`${API_URL}/comments/?offset=${offset}&review_id=` + review_id)
     let comments = parseList(response)
     return comments.results
-
   } catch (error) {
     console.error(error)
     return []
