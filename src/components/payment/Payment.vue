@@ -84,10 +84,11 @@
 </template>
 
 <script>
-import { StripeElements } from 'vue-stripe-checkout';
+import { StripeElements } from 'vue-stripe-checkout'
 import { getTour } from '../../services/tour.service'
 import PaymentService from '../../services/payment.service'
-import {PUBLISH_ABLE_KEY} from '../../.env'
+// eslint-disable-next-line no-unused-vars
+import { PUBLISH_ABLE_KEY } from '../../.env'
 export default {
   components: {
     StripeElements
@@ -103,40 +104,39 @@ export default {
     description: ''
   }),
   methods: {
-    async init() {
+    async init () {
       const tour = await this.getTour()
       this.amount = tour.data.amount
       this.description = tour.data.title
       this.tourDetail = tour.data
     },
 
-    async getTour() {
+    async getTour () {
       const tour = await getTour(this.$route.params.id)
       return tour
     },
     submit () {
-      this.$refs.elementsRef.submit();
+      this.$refs.elementsRef.submit()
     },
     tokenCreated (token) {
-      this.token = token;
+      this.token = token
       this.charge = {
         'token': token.id,
         'amount': this.amount, // the amount you want to charge the customer in cents. $100 is 1000 (it is strongly recommended you use a product id and quantity and get calculate this on the backend to avoid people manipulating the cost)
         'description': this.description // optional description that will show up on stripe when looking at payments
       }
-      this.sendTokenToServer(this.charge);
+      this.sendTokenToServer(this.charge)
     },
     sendTokenToServer (data) {
       PaymentService.charge({
         data: data,
         id: this.$route.params.id
       })
-      this.$router.push({ path: '/complete' });
+      this.$router.push({ path: '/complete' })
     }
   },
-  mounted() {
+  mounted () {
     this.init()
-
   }
 }
 </script>

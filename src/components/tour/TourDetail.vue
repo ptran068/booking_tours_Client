@@ -69,7 +69,7 @@ import { data } from '../../services/data.service'
 import { postBook } from '../../services/book.service'
 export default {
   name: 'Tours',
-    components: {
+  components: {
     ReviewList
   },
   data () {
