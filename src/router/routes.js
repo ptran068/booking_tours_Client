@@ -47,6 +47,7 @@ export const routes = [
   },
   {
     path: '/user/manage',
+    name: 'manage-user',
     component: ManageUser,
     meta: { title: `${DOMAIN_TITLE} | manage` }
   }
