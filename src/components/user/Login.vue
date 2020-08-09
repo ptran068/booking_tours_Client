@@ -197,7 +197,6 @@ export default {
         try {
           await authService.login({ email: this.email, password: this.password })
           this.closeDialog()
-          this.$router.push({ name: 'manage-user' });
         } catch (error) {
           this.loginFailedMessage = 'Đăng nhập thất bại!!'
         }
