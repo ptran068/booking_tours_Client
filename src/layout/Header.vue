@@ -33,7 +33,7 @@
 
     <div class="navbar navbar-expand-md navbar-dark bg-light mb-0 py-0 sticky-top" v-if="!isAdmin()">
       <router-link class="navbar-brand" :to="{ name: 'index' }">
-        <img src="../assets/img/logo.png" alt="logo" width="50%">
+        <img src="../assets/img/logo.jpg" alt="logo" width="10%">
       </router-link>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <form class="form-inline my-auto mt-md-0 ml-auto">

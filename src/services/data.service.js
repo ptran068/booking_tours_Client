@@ -12,6 +12,16 @@ const getTours = async function () {
   }
 }
 
+const getTourDetail = async function (params) {
+  try {
+    const response = await axios.get(`${API_URL}/tour/${params}`)
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
+
 const parseList = response => {
   if (response.status !== 200) throw Error(response.message)
   if (!response.data) return []
@@ -23,5 +33,6 @@ const parseList = response => {
 }
 
 export const data = {
-  getTours
+  getTours,
+  getTourDetail
 }

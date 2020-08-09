@@ -57,8 +57,8 @@
                 v-model="password"
                 type="password"
                 label="Password"
+                prepend-icon="mdi-lock-outline"
                 color="#08855B"
-                prepend-icon="lock"
                 :rules="[rules.required]"
               ></v-text-field>
             </v-form>
