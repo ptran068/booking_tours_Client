@@ -17,3 +17,19 @@ function debounce (fn, delay) {
 }
 
 directive.debounce = debounce
+
+
+
+function create(data) {
+  const infor = {
+    name: data.name,
+    email: data.email
+  }
+}
+
+const phong = {
+  name: 'ssss',
+  email: 'aaaaa'
+}
+
+create(phong)

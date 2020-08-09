@@ -6,17 +6,20 @@
         <router-view></router-view>
       </transition>
     </div>
-    <!-- <AppFooter v-if="!$isAdmin"></AppFooter> -->
+    <AppFooter></AppFooter>
+
   </v-app>
 </template>
 
 <script>
 import AppHeader from '../layout/Header.vue';
+import AppFooter from '../layout/Footer.vue';
 
 export default {
   name: 'AppLayout',
   components: {
     AppHeader,
+    AppFooter
   }
 }
 </script>

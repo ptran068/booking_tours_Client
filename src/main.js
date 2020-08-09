@@ -13,6 +13,9 @@ import '@fortawesome/fontawesome-free/js/all.js'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import vuetify from './plugins/vuetify';
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 setGlobalHelpers()
 Vue.config.productionTip = false

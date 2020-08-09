@@ -24,7 +24,6 @@ export async function initCurrentUserStateMiddleware (to, from, next) {
  * Check access permission to auth routes
  */
 export function checkAccessMiddleware (to, from, next) {
-  print($store.state.user)
   const currentUserId = $store.state.user.currentUser.id
   const isAuthRoute = to.matched.some(item => item.meta.isAuth)
 
