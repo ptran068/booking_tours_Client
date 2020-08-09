@@ -7,5 +7,5 @@ export default {
   auth,
   user,
   dom,
-  toast,
+  toast
 }

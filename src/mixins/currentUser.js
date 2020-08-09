@@ -4,7 +4,7 @@ export default {
       return this.$store.state.user.currentUser
     },
 
-    $isAdmin() {
+    $isAdmin () {
       return this.$currentUser && this.$currentUser.role === 1
     }
   }
