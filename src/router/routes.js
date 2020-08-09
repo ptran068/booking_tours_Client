@@ -2,9 +2,12 @@
 import HomePage from '../pages/Home.vue'
 import TourDetail from '../components/tour/TourDetail.vue'
 import NotFoundPage from '../pages/NotFound.vue'
-import ReviewDetail from '../components/review/ReviewDetail.vue'
+import Payment from '../components/payment/Payment.vue'
+import PaymentSuccess from '../components/payment/complete.vue'
+import ManageUser from '../components/user/Manage.vue'
 
-import { DOMAIN_TITLE } from '../.env.js'
+import { DOMAIN_TITLE } from '../.env'
+import ReviewDetail from '../components/review/ReviewDetail.vue'
 
 export const routes = [
   {
@@ -30,5 +33,21 @@ export const routes = [
     path: '*',
     component: NotFoundPage,
     meta: { title: `${DOMAIN_TITLE} | not found` }
+  },
+  {
+    path: '/payment/:id',
+    name: 'payment',
+    component: Payment,
+    meta: { title: `${DOMAIN_TITLE} | payment` }
+  },
+  {
+    path: '/complete',
+    component: PaymentSuccess,
+    meta: { title: `${DOMAIN_TITLE} | complete` }
+  },
+  {
+    path: '/user/manage',
+    component: ManageUser,
+    meta: { title: `${DOMAIN_TITLE} | manage` }
   }
 ]

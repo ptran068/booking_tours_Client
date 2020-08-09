@@ -33,9 +33,14 @@
 
     <div class="navbar navbar-expand-md navbar-dark bg-light mb-0 py-0 sticky-top" v-if="!isAdmin()">
       <router-link class="navbar-brand" :to="{ name: 'index' }">
-        <img src="../assets/img/logo.jpg" alt="logo" width="10%">
+        <img style="width:100px; heigth:100px;" src="../assets/img/tour_logo2.webp" alt="logo" width="50%">
       </router-link>
       <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li>
+            <router-link to="/">Home</router-link>
+          </li>
+        </ul>
         <form class="form-inline my-auto mt-md-0 ml-auto">
           <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" style="height: 35px;">
           <button class="btn btn-outline-secondary mr-sm-2" type="button"><img src="../assets/img/search.png" alt="search"  style="width: 20px"></button>

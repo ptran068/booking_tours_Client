@@ -54,7 +54,7 @@
               <v-spacer></v-spacer>
               <button @click="dialog = false"
                 class="btn btn-primary text-light mr-5"> Cancel </button>
-              <router-link  @click="dialog = false" :to="{ name: 'payment'}" ><button class="btn btn-primary text-light" @click="postBooking">Payment</button></router-link>
+              <router-link  @click="dialog = false" :to="{name: 'payment', params: { id: tour.id}}" ><button class="btn btn-primary text-light" @click="postBooking">Payment</button></router-link>
             </v-card-actions>
           </v-card>
         </v-dialog>
