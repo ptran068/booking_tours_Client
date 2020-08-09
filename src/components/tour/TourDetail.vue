@@ -72,7 +72,7 @@ export default {
       tour: '',
       dialog: false,
       start_date: new Date().toISOString().substr(0, 10),
-      menu: false,
+      menu2: false,
       token: localStorage.getItem('token')
     }
   },
