@@ -43,8 +43,8 @@
         {{ status }}
       </div>
       <v-card-actions>
-        <v-btn color="primary" class="mr-4" @click="submit">submit</v-btn>
-        <v-btn color="error" @click="clear">clear</v-btn>
+        <button class="btn btn-primary text-light mr-4" @click="submit">Submit</button>
+        <button class="btn btn-danger text-light" @click="clear">Clear</button>
       </v-card-actions>
     </v-form>
     <div class="row">
@@ -80,10 +80,8 @@
 
     </div>
       <div v-if="page" class="text-center">
-              <v-btn v-if="load" color="primary" @click="paginator"
-                >See more</v-btn
-              >
-              <v-btn v-else color="primary" loading>See more</v-btn>
+              <button v-if="load" @click="paginator" class="btn btn-primary text-light">See more</button>
+              <button v-else  @click="paginator" class="btn btn-primary text-light">See more</button>
             </div>
   </div>
 </template>

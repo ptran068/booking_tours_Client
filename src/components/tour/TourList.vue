@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-sm-6 col-md-4 col-lg-3" v-for=" tour in tours" :key="tour.id">
             <div class="card mb-3" style="width: auto;">
-                <img v-if="tour.images[0]"  :src="tour.images[0].link" class="card-img-top" alt="not found">
+                <img v-if="tour.images[0]"  :src="tour.images[0].link" class="card-img-top" alt="not found" style="height:175px">
                 <div class="card-body">
                     <h4 class="card-title">{{tour.title}}</h4>
                     <p class="card-text" style="display: block; width: 150px; overflow: hidden; white-space: nowrap; ">{{tour.description}}</p>

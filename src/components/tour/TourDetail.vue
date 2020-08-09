@@ -1,65 +1,76 @@
+/* eslint-disable vue/no-unused-components */
 <template>
   <div class="container-fluid">
-    <h1 class="text-center pb-5">{{ tour.title }}</h1>
-    <div class="text-center"><img v-if="tour.images[0]" :src="tour.images[0].link" alt="" class="rounded-lg" width="70%"></div>
-    <hr>
-    <div>
-      <small >Created By: {{tour.created_by.last_name}} {{tour.created_by.first_name}} </small>
-      <small style="float: right;">Views: {{tour.views}} </small>
+    <div class="text-center mt-5">
+      <div class="float-left">
+        <router-link :to="{ name: 'index'}" class="btn btn-primary text-light ml-5">Back</router-link>
+      </div>
+      <h1 class="text-center">{{ tour.title }}</h1>
     </div>
-    <hr>
-    <div class="pt-5 pb-5">{{tour.description}}</div>
-    <hr>
-    <div class="pt-5 pb-5">{{tour.policy}}</div>
+    <div class="row border border-secondary rounded-lg m-1">
+      <div class="col-sm-12 col-md-6 col-lg-6">
+        <div class="text-center"><img v-if="tour.images[0]" :src="tour.images[0].link" alt="" class="rounded-lg" width="70%"></div>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-6">
+        <div>
+          <small >Created By: {{tour.created_by.last_name}} {{tour.created_by.first_name}} </small>
+          <small style="float: right;">Views: {{tour.views}} </small>
+        </div>
+        <hr>
+        <div class="pt-5 pb-5">{{tour.description}}</div>
+        <hr>
+        <div class="pt-5 pb-5">{{tour.policy}}</div>
     <!-- <div>
       <p class="d-inline mr-13">Rating: {{tour.avg_rating.score__avg}}</p>
       <button v-if="token" class="btn-sm btn-primary text-light d-inline">Rating</button>
     </div> -->
-    
-    <div>
-      <button
-      class="btn btn-primary text-light mt-5 mb-5 d-inline"
-      @click.stop="dialog = true"
-      >
-      Booking
-      </button>
-      <v-dialog
-          v-model="dialog"
-          persistent max-width="600px"
-        >
-          <v-card >
-            <v-card-title class="headline" >Chose date to start tour</v-card-title>
-            <v-card-text>
-              <v-menu
-                v-model="menu2"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="start_date"
-                    readonly
-                    prepend-icon="mdi-calendar-range-outline"
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                  <v-date-picker v-model="start_date" @input="menu2 = false"></v-date-picker>
-              </v-menu>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <button @click="dialog = false"
-                class="btn btn-primary text-light mr-5"> Cancel </button>
-              <router-link  @click="dialog = false" :to="{name: 'payment', params: { id: tour.id}}" ><button class="btn btn-primary text-light" @click="postBooking">Payment</button></router-link>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <router-link :to="{ name: 'index'}" class="btn btn-primary text-light ml-5">Back</router-link>
-        <ReviewList v-bind:tour_id="tour.id"></ReviewList>
+        <div>
+          <button
+          class="btn btn-primary text-light mt-5 mb-5 d-inline"
+          @click.stop="dialog = true"
+          >
+          Booking
+          </button>
+          <v-dialog
+              v-model="dialog"
+              persistent max-width="600px"
+            >
+              <v-card >
+                <v-card-title class="headline" >Chose date to start tour</v-card-title>
+                <v-card-text>
+                  <v-menu
+                    v-model="menu2"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="start_date"
+                        readonly
+                        prepend-icon="mdi-calendar-range-outline"
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                      <v-date-picker v-model="start_date" @input="menu2 = false"></v-date-picker>
+                  </v-menu>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <button @click="dialog = false"
+                    class="btn btn-primary text-light mr-5"> Cancel </button>
+                  <router-link  @click="dialog = false" :to="{name: 'payment', params: { id: tour.id}}" ><button class="btn btn-primary text-light" @click="postBooking">Payment</button></router-link>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+        </div>
+      </div>
+    </div>
+    <div class="container mt-5">
+      <ReviewList v-bind:tour_id="tour.id"></ReviewList>
     </div>
   </div>
 </template>

@@ -5,8 +5,8 @@
         <div class="float-left">
           <router-link
         :to="{ name: 'tour', params: { id: review.tours } }"
-        class="btn btn-secondary text-dark mt-5 mb-5"
-        ><v-icon class="pb-1">mdi-backburger</v-icon> Back</router-link
+        class="btn btn-primary text-light mt-5 mb-5"
+        >Back</router-link
       >
         </div>
         

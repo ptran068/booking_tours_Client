@@ -7,14 +7,13 @@
         label="Comment"
         v-model="content"
       ></v-textarea>
-
       <v-card-actions>
         <v-d>{{ status }}</v-d>
-        <v-btn class="mr-4" color="primary" @click="submit">submit</v-btn>
-        <v-btn color="error" @click="clear">clear</v-btn>
+        <button class="btn btn-primary text-light mr-4" @click="submit">Submit</button>
+        <button class="btn btn-danger text-light" @click="clear">Clear</button>
       </v-card-actions>
+    <hr>
     </v-form>
-
     <div v-for="item in comments" :key="item.id">
       <section class="post-heading">
         <div class="row">
@@ -24,12 +23,12 @@
               <div class="media-body">
                 <a href="#" class="anchor-username">
                   <h4 class="media-heading">
-                    {{ handleEmail(item.created_by.email) }} {{test+=1}}
+                    {{ handleEmail(item.created_by.email) }}
                   </h4>
                 </a>
-                <a href="#" class="anchor-time">{{
+                <small>{{
                   $showTime(item.created_at)
-                }}</a>
+                }}</small>
               </div>
             </div>
           </div>
@@ -46,10 +45,9 @@
       <hr />
     </div>
     <div v-if="page" class="text-center">
-      <v-btn v-if="load" color="primary" @click="paginator">See more</v-btn>
-            <v-btn v-else color="primary" loading>See more</v-btn>
+      <button v-if="load" @click="paginator" class="btn btn-primary text-light">See more</button>
+      <button v-else  @click="paginator" class="btn btn-primary text-light">See more</button>
     </div>
-
   </div>
 </template>
 
@@ -103,8 +101,6 @@ export default {
       this.load = false
       this.page += 1
       var cmts = await data.getComments(this.review_id, this.page)
-      console.log(cmts)
-      debugger
       if (cmts.length) {
         for (var item in cmts) {
           this.comments.push(cmts[item])
