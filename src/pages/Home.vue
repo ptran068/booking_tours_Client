@@ -18,19 +18,18 @@
     </v-carousel>
     <div class="container">
       <h3 class="h3">Tours</h3>
-      <div class="row">
-
-      </div>
+      <TourList/>
     </div>
   </div>
 </template>
 
 <script>
-
+import TourList from '../components/tour/TourList'
 export default {
   name: 'IndexPage',
 
   components: {
+    TourList
   },
 
   data () {
@@ -38,14 +37,14 @@ export default {
     }
   },
 
-  mounted() {
-    this.init();
+  mounted () {
+    this.init()
   },
 
   methods: {
-    async init() {
+    async init () {
 
-    },
+    }
   }
 }
 </script>

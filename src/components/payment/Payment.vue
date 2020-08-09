@@ -13,17 +13,17 @@
               <v-img
                 class="white--text align-end"
                 height="200px"
-                src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                :src="tourDetail.images[0].link"
               >
-                <v-card-title>Top 10 Australian beaches</v-card-title>
+                <v-card-title>{{tourDetail.title}}</v-card-title>
               </v-img>
 
-              <v-card-subtitle class="pb-0">Number 10</v-card-subtitle>
+              <v-card-subtitle class="pb-0">{{tourDetail.amount / 100}}</v-card-subtitle>
 
               <v-card-text class="text--primary">
-                <div>Whitehaven Beach</div>
+                <div>{{tourDetail.adress}}</div>
 
-                <div>Whitsunday Island, Whitsunday Islands</div>
+                <div>{{tourDetail.description}}</div>
               </v-card-text>
 
               <v-card-actions>
@@ -94,6 +94,7 @@ export default {
   },
   data: () => ({
     dialog: false,
+    tourDetail: null,
     loading: false,
     amount: 0,
     publishableKey: 'pk_test_51HARcVFZiqUk9BtoWsPZfsz6nnXVGCTi8ioUPx0Gfsl61WyNGFqO5sM5cK6tcH9JVYj8QoxVFm5hkASGHGucFXGx00pgyLfWmV',
@@ -106,10 +107,11 @@ export default {
       const tour = await this.getTour()
       this.amount = tour.data.amount
       this.description = tour.data.title
+      this.tourDetail = tour.data
     },
 
     async getTour() {
-      const tour = await getTour()
+      const tour = await getTour(this.$route.params.id)
       return tour
     },
     submit () {
@@ -125,8 +127,11 @@ export default {
       this.sendTokenToServer(this.charge);
     },
     sendTokenToServer (data) {
-      PaymentService.charge(data)
-      this.$router.push({ path: '/payment/complete' });
+      PaymentService.charge({
+        data: data,
+        id: this.$route.params.id
+      })
+      this.$router.push({ path: '/complete' });
     }
   },
   mounted() {

@@ -57,8 +57,8 @@
                 v-model="password"
                 type="password"
                 label="Password"
+                prepend-icon="mdi-lock-outline"
                 color="#08855B"
-                prepend-icon="lock"
                 :rules="[rules.required]"
               ></v-text-field>
             </v-form>
@@ -138,7 +138,6 @@
   </v-dialog>
 </template>
 
-
 <script>
 import * as authService from '../../services/auth.service'
 import ValidationMixin from '../../mixins/validation'
@@ -150,84 +149,82 @@ export default {
   props: {
     source: String,
     visible: Boolean,
-    defaultTab: String,
+    defaultTab: String
   },
 
   data: () => ({
     drawer: null,
     tab: null,
-    email: "",
-    password: "",
+    email: '',
+    password: '',
 
-    resEmail: "",
-    resPassword: "",
-    resPhone: "",
+    resEmail: '',
+    resPassword: '',
+    resPhone: '',
 
     existingUserErrorMessage: undefined,
     successMessage: undefined,
-    loginFailedMessage: undefined,
+    loginFailedMessage: undefined
   }),
 
   watch: {
-    defaultTab(val) {
-      this.tab = val;
+    defaultTab (val) {
+      this.tab = val
     },
 
-    visible() {
-      this.existingUserErrorMessage = undefined;
-      this.successMessage = undefined;
-      this.loginFailedMessage = undefined;
+    visible () {
+      this.existingUserErrorMessage = undefined
+      this.successMessage = undefined
+      this.loginFailedMessage = undefined
 
       if (this.$refs.login) {
-        this.$refs.login.reset();
+        this.$refs.login.reset()
       }
 
       if (this.$refs.login) {
-        this.$refs.login.reset();
+        this.$refs.login.reset()
       }
-
     }
   },
 
   computed: {
-    ...mapGetters({ isAdmin : "user/isAdmin" })
+    ...mapGetters({ isAdmin: 'user/isAdmin' })
   },
 
   methods: {
-    async login() {
+    async login () {
       if (this.$refs.login.validate()) {
         try {
-          await authService.login({ email: this.email , password: this.password });
-          this.closeDialog();
+          await authService.login({ email: this.email, password: this.password })
+          this.closeDialog()
         } catch (error) {
-          this.loginFailedMessage = "Đăng nhập thất bại!!";
+          this.loginFailedMessage = 'Đăng nhập thất bại!!'
         }
       }
     },
 
-    buildRegisterData() {
+    buildRegisterData () {
       return {
         email: this.resEmail,
         password: this.resPassword,
-        phone: this.resPhone,
+        phone: this.resPhone
       }
     },
 
-    closeDialog() {
-      this.$emit('update:visible', false);
+    closeDialog () {
+      this.$emit('update:visible', false)
     },
 
-    async register() {
+    async register () {
       if (this.$refs.register.validate()) {
         try {
-          await authService.create(this.buildRegisterData());
-          this.closeDialog();
+          await authService.create(this.buildRegisterData())
+          this.closeDialog()
         } catch (error) {
-          this.loginFailedMessage = "Đăng nhập thất bại!!";
+          this.loginFailedMessage = 'Đăng nhập thất bại!!'
         }
-        
       }
-    },
+    }
   }
 }
 </script>

@@ -15,8 +15,8 @@ class PaymentService extends BaseService {
       return 'payment'
     }
   
-    charge(data) {
-      const charge = this.request({auth: true}).post(`/${this.entity}/charge?tour_id=62383e36-7db4-465d-9d3f-f82f52f7db3d`, data)
+    charge({data, id}) {
+      const charge = this.request({auth: true}).post(`/${this.entity}/charge?tour_id=${id}`, data)
       return charge
     }
 

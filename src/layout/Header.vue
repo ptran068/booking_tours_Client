@@ -35,16 +35,13 @@
       <router-link class="navbar-brand" :to="{ name: 'index' }">
         <img style="width:100px; heigth:100px;" src="../assets/img/tour_logo2.webp" alt="logo" width="50%">
       </router-link>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon bg-secondary"></span>
-      </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
           <li>
             <router-link to="/">Home</router-link>
           </li>
         </ul>
-        <form class="form-inline my-auto mt-md-0">
+        <form class="form-inline my-auto mt-md-0 ml-auto">
           <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" style="height: 35px;">
           <button class="btn btn-outline-secondary mr-sm-2" type="button"><img src="../assets/img/search.png" alt="search"  style="width: 20px"></button>
         </form>
@@ -59,9 +56,9 @@
 </template>
 
 <script>
-import LoginDialog from '../components/user/Login';
-import { makeLogout } from "../services/auth.service";
-import { mapGetters } from 'vuex';
+import LoginDialog from '../components/user/Login'
+import { makeLogout } from '../services/auth.service'
+import { mapGetters } from 'vuex'
 
 export default {
 
@@ -69,27 +66,27 @@ export default {
     LoginDialog
   },
 
-  data() {
+  data () {
     return {
       makeLogout,
       loginDialogVisible: false,
-      defaultLoginDialogTab: 'login',
-    };
+      defaultLoginDialogTab: 'login'
+    }
   },
 
   computed: {
-    greeting() {
-      return `Hello ${this.$currentUser.email}`;
+    greeting () {
+      return `Hello ${this.$currentUser.email}`
     }
   },
 
   methods: {
-    openLoginDialog(isLogin) {
-      this.defaultLoginDialogTab = isLogin ? 'login' : 'register';
-      this.loginDialogVisible = true;
+    openLoginDialog (isLogin) {
+      this.defaultLoginDialogTab = isLogin ? 'login' : 'register'
+      this.loginDialogVisible = true
     },
-    ...mapGetters({ isAdmin: 'user/isAdmin'}),
-  },
+    ...mapGetters({ isAdmin: 'user/isAdmin' })
+  }
 }
 </script>
 

@@ -1,5 +1,5 @@
-import $store from "../store"
-import { getToken } from "../services/auth.service"
+import $store from '../store'
+import { getToken } from '../services/auth.service'
 
 /**
  * Current user state initialization
@@ -10,8 +10,8 @@ export async function initCurrentUserStateMiddleware (to, from, next) {
 
   if (!currentUserId && getToken()) {
     try {
-      await $store.dispatch("user/getCurrent")
-      next();
+      await $store.dispatch('user/getCurrent')
+      next()
     } catch (e) {
       console.log(e)
     }

@@ -1,10 +1,10 @@
 module.exports = {
-  "devServer": {
-    "watchOptions": {
-      "clientLogLevel": "warning"
+  'devServer': {
+    'watchOptions': {
+      'clientLogLevel': 'warning'
     }
   },
-  "transpileDependencies": [
-    "vuetify"
+  'transpileDependencies': [
+    'vuetify'
   ]
 }
