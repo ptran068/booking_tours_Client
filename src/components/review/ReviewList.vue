@@ -47,7 +47,7 @@
         v-model="content"
         required
       ></v-textarea>
-
+        <div class="ml-2"  v-if="status" style="font-style:italic"> <v-icon medium class="p-1">fas fa-circle-notch fa-spin</v-icon> {{status}}</div>
       <v-card-actions>
         <v-btn class="mr-4" @click="submit">submit</v-btn>
         <v-btn @click="clear">clear</v-btn>
@@ -109,6 +109,7 @@ export default {
       content: "",
       title: "",
       files: [],
+      status: '',
       titleRules: [
         v => !!v || "Title is required",
         v => (v && v.length <= 20) || "Title must be less than 20 characters"
@@ -129,6 +130,7 @@ export default {
       return email.slice(0, index);
     },
     async submit() {
+      this.status = 'Uploading...'
       let formData = new FormData()
       formData.append('file', this.files[0])
       var new_review = await postReview({
@@ -139,6 +141,7 @@ export default {
       }, formData);
       this.$refs.form.reset();
       this.reviews.unshift(new_review);
+      this.status = ''
     },
     clear() {
       this.$refs.form.reset();

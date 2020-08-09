@@ -9,6 +9,7 @@
       ></v-textarea>
 
       <v-card-actions>
+        <v-d>{{ status }}</v-d>
         <v-btn class="mr-4" @click="submit">submit</v-btn>
         <v-btn @click="clear">clear</v-btn>
       </v-card-actions>
@@ -58,7 +59,8 @@ export default {
   data() {
     return {
       comments: [],
-      content: ""
+      content: "",
+      status: ""
     };
   },
   async created() {
@@ -77,10 +79,15 @@ export default {
       this.$refs.form.reset();
     },
     async submit() {
-      if(this.content) {
-          var new_comment = await postComment({content: this.content, review: this.review_id})
-          this.$refs.form.reset()
-          this.comments.unshift(new_comment)
+      if (this.content) {
+        this.status = 'Uploading...'
+        var new_comment = await postComment({
+          content: this.content,
+          review: this.review_id
+        });
+        this.$refs.form.reset();
+        this.comments.unshift(new_comment);
+        this.status = ''
       }
     }
   },
