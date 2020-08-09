@@ -5,7 +5,7 @@
             <div class="card mb-3" style="width: auto;">
                 <img v-if="tour.images[0]"  :src="tour.images[0].link" class="card-img-top" alt="not found" style="height:175px">
                 <div class="card-body">
-                    <h4 class="card-title">{{tour.title}}</h4>
+                    <h4 class="card-title" style="overflow: hidden; height: 2rem">{{tour.title}}</h4>
                     <p class="card-text" style="display: block; width: 150px; overflow: hidden; white-space: nowrap; ">{{tour.description}}</p>
                     <router-link :to="{ name: 'tour', params: { id: tour.id }}" class="btn btn-primary text-light"> Read more ... </router-link>
                 </div>
@@ -54,5 +54,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 </style>
