@@ -43,41 +43,33 @@
         {{ status }}
       </div>
       <v-card-actions>
-        <button class="btn btn-primary text-light mr-4" @click="submit">Submit</button>
-        <button class="btn btn-danger text-light" @click="clear">Clear</button>
+        <v-btn color="primary" class="mr-4" @click="submit">Submit</v-btn>
+        <v-btn color="error" @click="clear">Clear</v-btn>
       </v-card-actions>
     </v-form>
     <div class="row">
-      <div class="col-sm-6 col-md-4 col-lg-3" v-for="item in reviews" :key="item.id">
+      <div class="col-sm-6 col-md-4 col-lg-3" v-for="review in reviews" :key="review.id">
         <div class="card mb-3" style="width: auto;">
           <img
-            v-if="item.images[0]"
-            :src="item.images[0].link"
+            v-if="review.images[0]"
+            :src="review.images[0].link"
             class="card-img-top"
             alt="not found"
-            height="180px"
+            style="height:175px"
           />
           <div class="card-body">
-            <div class="card-title">
-              <div>
-                <strong class="float-left">{{ handleEmail(item.created_by.email) }}</strong>
-                <strong class="float-right">{{ item.views }} Views</strong>
-              </div>
-              <br />
-              <h4>{{ item.title }}</h4>
-            </div>
+            <h5 class="card-title" style="overflow: hidden; height: 2rem">{{ review.title }}</h5>
             <p
               class="card-text"
               style="display: block; width: 150px; overflow: hidden; white-space: nowrap; "
-            >{{ item.content }}</p>
+            >{{ review.content }}</p>
             <router-link
-              :to="{ name: 'review', params: { id: item.id } }"
+              :to="{ name: 'review', params: { id: review.id } }"
               class="btn btn-primary text-light"
             >Read more ...</router-link>
           </div>
         </div>
       </div>
-
     </div>
       <div v-if="page" class="text-center">
               <button v-if="load" @click="paginator" class="btn btn-primary text-light">See more</button>

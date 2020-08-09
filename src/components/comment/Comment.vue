@@ -9,8 +9,8 @@
       ></v-textarea>
       <v-card-actions>
         <v-d>{{ status }}</v-d>
-        <button class="btn btn-primary text-light mr-4" @click="submit">Submit</button>
-        <button class="btn btn-danger text-light" @click="clear">Clear</button>
+        <v-btn color="primary" class="mr-4" @click="submit">Submit</v-btn>
+        <v-btn color="error" @click="clear">Clear</v-btn>
       </v-card-actions>
     <hr>
     </v-form>

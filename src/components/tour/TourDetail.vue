@@ -9,63 +9,84 @@
     </div>
     <div class="row border border-secondary rounded-lg m-1">
       <div class="col-sm-12 col-md-6 col-lg-6">
-        <div class="text-center"><img v-if="tour.images[0]" :src="tour.images[0].link" alt="" class="rounded-lg" width="70%"></div>
+        <div class="text-center">
+          <img v-if="tour.images[0]" :src="tour.images[0].link" alt class="rounded-lg" width="70%" />
+        </div>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-6">
         <div>
-          <small >Created By: {{tour.created_by.last_name}} {{tour.created_by.first_name}} </small>
-          <small style="float: right;">Views: {{tour.views}} </small>
+          <small>Created By: {{tour.created_by.last_name}} {{tour.created_by.first_name}}</small>
+          <small style="float: right;">Views: {{tour.views}}</small>
         </div>
-        <hr>
+        <hr />
         <div class="pt-5 pb-5">{{tour.description}}</div>
-        <hr>
+        <hr />
         <div class="pt-5 pb-5">{{tour.policy}}</div>
-    <!-- <div>
+        <!-- <div>
       <p class="d-inline mr-13">Rating: {{tour.avg_rating.score__avg}}</p>
       <button v-if="token" class="btn-sm btn-primary text-light d-inline">Rating</button>
-    </div> -->
-        <div>
+        </div>-->
+        <div v-if="status">
           <button
-          class="btn btn-primary text-light mt-5 mb-5 d-inline"
-          @click.stop="dialog = true"
-          >
-          Booking
-          </button>
-          <v-dialog
-              v-model="dialog"
-              persistent max-width="600px"
-            >
-              <v-card >
-                <v-card-title class="headline" >Chose date to start tour</v-card-title>
-                <v-card-text>
-                  <v-menu
-                    v-model="menu2"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="start_date"
-                        readonly
-                        prepend-icon="mdi-calendar-range-outline"
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                      <v-date-picker v-model="start_date" @input="menu2 = false"></v-date-picker>
-                  </v-menu>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <button @click="dialog = false"
-                    class="btn btn-primary text-light mr-5"> Cancel </button>
-                  <router-link  @click="dialog = false" :to="{name: 'payment', params: { id: tour.id}}" ><button class="btn btn-primary text-light" @click="postBooking">Payment</button></router-link>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+            class="btn btn-primary text-light mt-5 mb-5 d-inline"
+            @click.stop="dialog = true"
+          >Booking</button>
+
+          <v-dialog v-model="dialog" persistent max-width="600px">
+            <v-card>
+              <v-card-title class="headline">Chose date to start tour</v-card-title>
+              <v-card-text>
+                <v-menu
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="start_date"
+                      readonly
+                      prepend-icon="mdi-calendar-range-outline"
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="start_date" @input="menu2 = false"></v-date-picker>
+                </v-menu>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <button @click="dialog = false" class="btn btn-primary text-light mr-5">Cancel</button>
+                <router-link
+                  @click="dialog = false"
+                  :to="{name: 'payment', params: { id: tour.id}}"
+                >
+                  <button class="btn btn-primary text-light" @click="postBooking">Payment</button>
+                </router-link>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
+        <div v-else>
+          <button class="btn btn-danger" @click.stop="cancelDialog=true">Cancel Book</button>
+
+          <v-dialog v-model="cancelDialog" max-width="290">
+            <v-card>
+              <v-card-title class="headline">You want to cancel the tour?</v-card-title>
+
+              <v-card-text>You will not get a refund.</v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn color="green darken-1" text @click="cancelDialog = false">Cancel</v-btn>
+
+                <v-btn color="green darken-1" text @click="cancel">Agree</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </div>
       </div>
     </div>
@@ -75,42 +96,62 @@
   </div>
 </template>
 <script>
-import ReviewList from '../review/ReviewList'
-import { data } from '../../services/data.service'
-import { postBook } from '../../services/book.service'
+import ReviewList from "../review/ReviewList";
+import { data } from "../../services/data.service";
+import { postBook, getBook, cancelBook } from "../../services/book.service";
 export default {
-  name: 'Tours',
+  name: "Tours",
   components: {
-    ReviewList
+    ReviewList,
   },
-  data () {
+  data() {
     return {
-      tour: '',
+      tour: "",
       dialog: false,
+      status: true,
+      cancelDialog: false,
+      book: "",
       start_date: new Date().toISOString().substr(0, 10),
       menu2: false,
-      token: localStorage.getItem('token')
-    }
+      token: localStorage.getItem("token"),
+    };
   },
-  async created () {
-    await this.loadTour()
+  async created() {
+    await this.loadTour();
+    await this.loadBook(this.tour.id);
   },
   methods: {
-    async loadTour () {
-      this.tour = await data.getTourDetail(this.$route.params.id)
+    async loadTour() {
+      this.tour = await data.getTourDetail(this.$route.params.id);
     },
-    async postBooking () {
-      console.log(this.start_date)
+    async postBooking() {
+      console.log(this.start_date);
       try {
-        await postBook({ start_date: this.start_date }, this.$route.params.id)
+        await postBook({ start_date: this.start_date }, this.$route.params.id);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-  }
-}
+    },
+    async loadBook(tour_id) {
+      this.book = await getBook(tour_id);
+      var date = new Date();
+      var dateStart = new Date(this.book.start_date);
+      if (date.getTime() >= dateStart.getTime() || this.book.status) {
+        this.status = true;
+      } else this.status = false;
+    },
+    async cancel() {
+      this.book = await cancelBook(
+        { start_date: this.book.start_date },
+        this.book.id
+      );
+      if (this.book.status) {
+        this.status = true;
+      }
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-
 </style>
