@@ -1,5 +1,6 @@
 <template>
-    <div class="row">
+<div>
+  <div class="row">
         <div class="col-sm-6 col-md-4 col-lg-3" v-for=" tour in tours" :key="tour.id">
             <div class="card mb-3" style="width: auto;">
                 <img v-if="tour.images[0]"  :src="tour.images[0].link" class="card-img-top" alt="not found" style="height:175px">
@@ -11,6 +12,11 @@
             </div>
         </div>
     </div>
+    <div v-if="page" class="text-center">
+        <button v-if="load" @click="paginator" class="btn btn-primary text-light">See more</button>
+        <button v-else  @click="paginator" class="btn btn-primary text-light">See more</button>
+      </div>
+</div>
 </template>
 
 <script>
@@ -19,7 +25,9 @@ export default {
   name: 'Tours',
   data () {
     return {
-      tours: []
+      tours: [],
+      page: 0,
+      load: true
     }
   },
   async created () {
@@ -28,6 +36,18 @@ export default {
   methods: {
     async loadTours () {
       this.tours = await data.getTours()
+      this.page = 1
+    },
+    async paginator () {
+      this.load = false
+      this.page += 1
+      var trs = await data.getTours(this.page)
+      if (trs.length) {
+        for (var item in trs) {
+          this.tours.push(trs[item])
+        }
+        this.load = true
+      } else this.page = 0
     }
   }
 }

@@ -1,11 +1,12 @@
 import * as axios from 'axios'
 import { API_URL } from '../.env.js'
 
-const getTours = async function () {
+const getTours = async function (page = 1) {
   try {
-    const response = await axios.get(`${API_URL}/tour/`)
+    var offset = (page - 1) * 12
+    const response = await axios.get(`${API_URL}/tour/?offset=${offset}&limit=12`)
     let tours = parseList(response)
-    return tours.listtours
+    return tours.results
   } catch (error) {
     console.error(error)
     return []
