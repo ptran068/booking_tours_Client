@@ -220,6 +220,7 @@ export default {
         try {
           await authService.create(this.buildRegisterData())
           this.closeDialog()
+          this.$router.push({ name: 'manage-user' })
         } catch (error) {
           this.loginFailedMessage = 'Đăng nhập thất bại!!'
         }

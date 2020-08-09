@@ -18,9 +18,7 @@ function debounce (fn, delay) {
 
 directive.debounce = debounce
 
-
-
-function create(data) {
+function create (data) {
   const infor = {
     name: data.name,
     email: data.email

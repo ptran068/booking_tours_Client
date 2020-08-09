@@ -32,7 +32,7 @@
                         <div class="title">
                             <h4>List Transaction </h4>
                         </div>
-                        <div v-for="transaction in transactions">
+                        <div v-for="transaction in transactions" :key="transaction.id">
                             <p class="trs">{{transaction.description}}</p>
                             <p class="trs">Amount: {{transaction.amount}}</p>
                             <p class="trs">status: {{transaction.status}}</p>
@@ -51,18 +51,18 @@
 import PaymentService from '../../services/payment.service'
 
 export default {
-    data: () => ({
-        transactions: []
-    }),
+  data: () => ({
+    transactions: []
+  }),
 
-    methods: {
-        async getTransaction() {
-            const data = await PaymentService.getTransactions()
-            this.transactions = data.data.results
-        }
-    },
-    mounted() {
-        this.getTransaction()
+  methods: {
+    async getTransaction () {
+      const data = await PaymentService.getTransactions()
+      this.transactions = data.data.results
+    }
+  },
+  mounted () {
+    this.getTransaction()
   }
 
 }

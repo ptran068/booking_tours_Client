@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import AppHeader from '../layout/Header.vue';
-import AppFooter from '../layout/Footer.vue';
+import AppHeader from '../layout/Header.vue'
+import AppFooter from '../layout/Footer.vue'
 
 export default {
   name: 'AppLayout',
