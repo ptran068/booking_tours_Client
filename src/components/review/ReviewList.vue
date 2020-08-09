@@ -43,8 +43,8 @@
         {{ status }}
       </div>
       <v-card-actions>
-        <v-btn class="mr-4" @click="submit">submit</v-btn>
-        <v-btn @click="clear">clear</v-btn>
+        <v-btn color="primary" class="mr-4" @click="submit">submit</v-btn>
+        <v-btn color="error" @click="clear">clear</v-btn>
       </v-card-actions>
     </v-form>
     <div class="row">
