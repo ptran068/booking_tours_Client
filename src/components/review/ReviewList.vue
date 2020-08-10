@@ -1,5 +1,27 @@
 <template>
   <div>
+    <v-row justify="center">
+        <v-dialog v-model="dialogMsg" max-width="290">
+          <v-card>
+            <v-card-title class="headline">Notice</v-card-title>
+
+            <v-card-text>
+              {{ msg }}
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-btn color="green darken-1" text @click="dialogMsg = false">
+                Ok
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+
+
+
     <v-form ref="form">
       <v-text-field
         outlined
@@ -43,7 +65,8 @@
         {{ status }}
       </div>
       <v-card-actions>
-        <v-btn color="primary" class="mr-4" @click="submit">Submit</v-btn>
+        <v-btn v-if="$currentUser.id" color="primary" class="mr-4" @click="submit">Submit</v-btn>
+        <v-btn v-else :disabled="!valid" color="primary" class="mr-4" > Submit </v-btn>
         <v-btn color="error" @click="clear">Clear</v-btn>
       </v-card-actions>
     </v-form>
@@ -92,6 +115,8 @@ export default {
       load: true,
       content: '',
       title: '',
+      msg: '',
+      dialogMsg: '',
       files: [],
       status: '',
       titleRules: [
@@ -108,9 +133,10 @@ export default {
     async loadReviews (tour_id) {
       this.reviews = []
       this.reviews = await data.getReviews(tour_id)
-      if (this.reviews.length) {
-        this.page = 1
+      if (this.reviews.length<12) {
+        this.page = 0
       }
+      else this.page = 1
     },
     handleEmail (email) {
       var index = email.indexOf('@')
@@ -129,9 +155,18 @@ export default {
         },
         formData
       )
-      this.$refs.form.reset()
-      this.reviews.unshift(new_review)
-      this.status = ''
+      if(new_review!=null)
+      {
+        this.$refs.form.reset()
+        this.reviews.unshift(new_review)
+        this.status = ''
+        this.msg = 'Succesfully'
+        this.dialogMsg = true
+      }
+      else {
+        this.msg = 'failed'
+        this.dialogMsg = false
+      }
     },
     clear () {
       this.$refs.form.reset()
@@ -140,6 +175,7 @@ export default {
       this.load = false
       this.page += 1
       var rvs = await data.getReviews(this.tour_id, this.page)
+      if (rvs.length < 12) this.page = 0
       if (rvs.length) {
         for (var item in rvs) {
           this.reviews.push(rvs[item])
