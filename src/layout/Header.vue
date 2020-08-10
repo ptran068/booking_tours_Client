@@ -35,6 +35,13 @@
       <router-link class="navbar-brand" :to="{ name: 'index' }">
         <img style="width:100px; heigth:100px;" src="../assets/img/tour_logo2.webp" alt="logo" width="50%">
       </router-link>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <form class="form-inline my-auto mt-md-0 ml-auto">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" style="height: 35px;">
+          <button class="btn btn-outline-secondary mr-sm-2" type="button"><img src="../assets/img/search.png" alt="search"  style="width: 20px"></button>
+        </form>
+      </div>
+
     </div>
     <login-dialog
       :visible.sync="loginDialogVisible"

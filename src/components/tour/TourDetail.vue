@@ -22,10 +22,26 @@
         <div class="pt-5 pb-5">{{tour.description}}</div>
         <hr />
         <div class="pt-5 pb-5">{{tour.policy}}</div>
-        <!-- <div>
-      <p class="d-inline mr-13">Rating: {{tour.avg_rating.score__avg}}</p>
-      <button v-if="token" class="btn-sm btn-primary text-light d-inline">Rating</button>
-        </div>-->
+        <hr />
+        <div>
+          <p v-if="tour.avg_rating.score__avg" class="d-inline mr-13">Rating: {{tour.avg_rating.score__avg}}</p>
+          <p v-else class="d-inline mr-10">Rating: No one has rated this!</p>
+          <button v-if="token" class="btn-sm btn-primary text-light d-inline" @click.stop="ratingDialog = true">Rating</button>
+          <v-dialog v-model="ratingDialog" max-width="320">
+            <v-card>
+              <v-card-title class="headline">This tour is great, isn't it?</v-card-title>
+              <div class="text-center">
+                <v-rating v-model="score"></v-rating>
+              </div>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <button @click="ratingDialog = false" class="btn-sm btn-primary text-light mr-5">Cancel</button>
+                <button class="btn-sm btn-primary text-light" @click="ratingDialog = false; postRating">Rating</button>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
+        <hr />
         <div v-if="status">
           <button
             class="btn btn-primary text-light mt-5 mb-5 d-inline"
@@ -71,18 +87,13 @@
         </div>
         <div v-else>
           <button class="btn btn-danger" @click.stop="cancelDialog=true">Cancel Book</button>
-
           <v-dialog v-model="cancelDialog" max-width="290">
             <v-card>
               <v-card-title class="headline">You want to cancel the tour?</v-card-title>
-
               <v-card-text>You will not get a refund.</v-card-text>
-
               <v-card-actions>
                 <v-spacer></v-spacer>
-
                 <v-btn color="green darken-1" text @click="cancelDialog = false">Cancel</v-btn>
-
                 <v-btn color="green darken-1" text @click="cancel">Agree</v-btn>
               </v-card-actions>
             </v-card>
@@ -99,6 +110,7 @@
 import ReviewList from '../review/ReviewList'
 import { data } from '../../services/data.service'
 import { postBook, getBook, cancelBook } from '../../services/book.service'
+import { postRating } from '../../services/rating.service'
 export default {
   name: 'Tours',
   components: {
@@ -109,9 +121,11 @@ export default {
       tour: '',
       dialog: false,
       status: true,
+      ratingDialog: false,
       cancelDialog: false,
       book: '',
       start_date: new Date().toISOString().substr(0, 10),
+      score: 5,
       menu2: false,
       token: localStorage.getItem('token')
     }
@@ -125,9 +139,15 @@ export default {
       this.tour = await data.getTourDetail(this.$route.params.id)
     },
     async postBooking () {
-      console.log(this.start_date)
       try {
         await postBook({ start_date: this.start_date }, this.$route.params.id)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async postRating () {
+      try {
+        await postRating({ tour_id: this.$route.params.id, score: (this.score * 2) })
       } catch (error) {
         console.log(error)
       }
