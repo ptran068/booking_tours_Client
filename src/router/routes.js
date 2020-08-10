@@ -5,6 +5,7 @@ import NotFoundPage from '../pages/NotFound.vue'
 import Payment from '../components/payment/Payment.vue'
 import PaymentSuccess from '../components/payment/complete.vue'
 import ManageUser from '../components/user/Manage.vue'
+import SearchTour from '../components/tour/Search.vue'
 
 import { DOMAIN_TITLE } from '../.env'
 import ReviewDetail from '../components/review/ReviewDetail.vue'
@@ -50,5 +51,11 @@ export const routes = [
     name: 'manage-user',
     component: ManageUser,
     meta: { title: `${DOMAIN_TITLE} | manage` }
-  }
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: SearchTour,
+    meta: { title: `${DOMAIN_TITLE} | results` }
+  },
 ]
