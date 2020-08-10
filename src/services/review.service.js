@@ -1,13 +1,13 @@
 import * as axios from 'axios'
 import { API_URL } from '../.env.js'
-import {options} from './headers'
+import { options } from './headers'
 
-const getReviews = async function (tour_id) {
+const getReviews = async function (tour_id, page = 1) {
   try {
-    const response = await axios.get(`${API_URL}/review/?tours_id=`+tour_id)
+    var offset = (page - 1) * 12
+    const response = await axios.get(`${API_URL}/review/?limit=12&offset=${offset}&tours_id=` + tour_id)
     let reviews = parseList(response)
     return reviews.results
-
   } catch (error) {
     console.error(error)
     return []
@@ -24,26 +24,24 @@ const parseList = response => {
   return list
 }
 
-export async function postReview({title, content, tours}, formData) {
+export async function postReview ({ title, content, tours }, formData) {
   try {
     let rp = await axios.post(`${API_URL}/file/upload`, formData, options)
     let image = parseData(rp)
-    let response = await axios.post(`${API_URL}/review/`, {title, content, tours, images: [image.id]}, options)
+    let response = await axios.post(`${API_URL}/review/`, { title, content, tours, images: [image.id] }, options)
     let review = parseData(response)
     return review
-  } catch(error) {
+  } catch (error) {
     console.error(error)
     return {}
   }
 }
 
-
 const parseData = response => {
-  if(response.status !==201) throw Error(response.message)
+  if (response.status !== 201) throw Error(response.message)
   if (!response.data) return {}
   return response.data
 }
-
 
 export const data = {
   getReviews

@@ -16,7 +16,7 @@
         </li>
 
         <li class="nav-item" v-if="$currentUser.id">
-          <div class="nav-link clickable" @click="$router.push({ name: 'user-infor'})">
+          <div class="nav-link clickable" @click="$router.push({ name: 'manage-user'})">
              {{ greeting }}
           </div>
         </li>
@@ -36,16 +36,12 @@
         <img style="width:100px; heigth:100px;" src="../assets/img/tour_logo2.webp" alt="logo" width="50%">
       </router-link>
       <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-          <li>
-            <router-link to="/">Home</router-link>
-          </li>
-        </ul>
         <form class="form-inline my-auto mt-md-0 ml-auto">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" style="height: 35px;">
-          <button class="btn btn-outline-secondary mr-sm-2" type="button"><img src="../assets/img/search.png" alt="search"  style="width: 20px"></button>
+          <v-text-field v-model="title" class="form-control mr-sm-2" type="text" placeholder="Search tours..." style="height: 35px;"></v-text-field>
+          <v-btn @click="searchTour" class="btn btn-outline-secondary mr-sm-2" type="button"><img src="../assets/img/search.png" alt="search"  style="width: 20px"></v-btn>
         </form>
       </div>
+
     </div>
     <login-dialog
       :visible.sync="loginDialogVisible"
@@ -59,6 +55,8 @@
 import LoginDialog from '../components/user/Login'
 import { makeLogout } from '../services/auth.service'
 import { mapGetters } from 'vuex'
+import TourService from '../services/tour.service'
+import $store from '../store'
 
 export default {
 
@@ -70,7 +68,9 @@ export default {
     return {
       makeLogout,
       loginDialogVisible: false,
-      defaultLoginDialogTab: 'login'
+      defaultLoginDialogTab: 'login',
+      title: '',
+      tours: []
     }
   },
 
@@ -81,6 +81,15 @@ export default {
   },
 
   methods: {
+    async searchTour() {
+      const listTours = await TourService.search(this.title)
+      if (listTours.data && listTours.data.results) {
+        this.tours = listTours.data.results
+      }
+      $store.commit('tour/SET-TOURS', this.tours)
+      this.$router.push({ path: '/search' });
+
+    },
     openLoginDialog (isLogin) {
       this.defaultLoginDialogTab = isLogin ? 'login' : 'register'
       this.loginDialogVisible = true

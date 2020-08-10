@@ -5,8 +5,8 @@
         <div class="float-left">
           <router-link
         :to="{ name: 'tour', params: { id: review.tours } }"
-        class="btn btn-secondary text-dark mt-5 mb-5"
-        ><v-icon class="pb-1">mdi-backburger</v-icon> Back</router-link
+        class="btn btn-primary text-light mt-5 mb-5"
+        >Back</router-link
       >
         </div>
         
@@ -43,7 +43,6 @@
       <hr />
       <div class="pt-5 pb-5">{{ review.content }}</div>
       <hr />
-      
 
       <Comment v-bind:review_id="review.id"></Comment>
     </div>
@@ -51,39 +50,37 @@
 </template>
 
 <script>
-import Comment from "../comment/Comment";
-import showTime from "../../mixins/formatTime";
-import { data, likeReview } from "../../services/reviewDetail.service";
-import { routes } from "../../router/routes";
+import Comment from '../comment/Comment'
+import { data, likeReview } from '../../services/reviewDetail.service'
 export default {
-  name: "Review",
+  name: 'Review',
   components: {
     Comment
   },
-  data() {
+  data () {
     return {
       review: {},
       listtest: []
-    };
+    }
   },
-  async created() {
-    await this.loadReview(this.$route.params.id);
+  async created () {
+    await this.loadReview(this.$route.params.id)
   },
   methods: {
-    async loadReview(review_id) {
-      this.review = {};
-      this.review = await data.getReview(review_id);
+    async loadReview (review_id) {
+      this.review = {}
+      this.review = await data.getReview(review_id)
     },
-    handleEmail(email) {
-      var index = email.indexOf("@");
-      return email.slice(0, index);
+    handleEmail (email) {
+      var index = email.indexOf('@')
+      return email.slice(0, index)
     },
-    async like() {
-      var like = await likeReview(this.$route.params.id);
-      this.review.like = like;
+    async like () {
+      var like = await likeReview(this.$route.params.id)
+      this.review.like = like
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped></style>
