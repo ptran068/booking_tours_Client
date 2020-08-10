@@ -2,7 +2,7 @@
   <v-container class="grey lighten-5">
 
     <v-row>
-      <v-col :cols="6">
+      <v-col :cols="3">
         <div>
             <v-card
               class="mx-auto"
@@ -26,8 +26,11 @@
             </v-card>
         </div>
       </v-col>
+      <v-col :cols="6">
+          <ReviewByUser />
+      </v-col>
       
-        <v-col :cols="6">
+        <v-col :cols="3">
                     <div class="wrapper">
                         <div class="title">
                             <h4>List Transaction </h4>
@@ -49,11 +52,15 @@
 <script>
 
 import PaymentService from '../../services/payment.service'
+import ReviewByUser from '../review/ReviewByUser'
 
 export default {
   data: () => ({
     transactions: []
   }),
+  components: {
+    ReviewByUser
+  },
 
   methods: {
     async getTransaction () {
