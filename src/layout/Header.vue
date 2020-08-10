@@ -16,7 +16,7 @@
         </li>
 
         <li class="nav-item" v-if="$currentUser.id">
-          <div class="nav-link clickable" @click="$router.push({ name: 'user-infor'})">
+          <div class="nav-link clickable" @click="$router.push({ name: 'manage-user'})">
              {{ greeting }}
           </div>
         </li>

@@ -96,61 +96,61 @@
   </div>
 </template>
 <script>
-import ReviewList from "../review/ReviewList";
-import { data } from "../../services/data.service";
-import { postBook, getBook, cancelBook } from "../../services/book.service";
+import ReviewList from '../review/ReviewList'
+import { data } from '../../services/data.service'
+import { postBook, getBook, cancelBook } from '../../services/book.service'
 export default {
-  name: "Tours",
+  name: 'Tours',
   components: {
-    ReviewList,
+    ReviewList
   },
-  data() {
+  data () {
     return {
-      tour: "",
+      tour: '',
       dialog: false,
       status: true,
       cancelDialog: false,
-      book: "",
+      book: '',
       start_date: new Date().toISOString().substr(0, 10),
       menu2: false,
-      token: localStorage.getItem("token"),
-    };
+      token: localStorage.getItem('token')
+    }
   },
-  async created() {
-    await this.loadTour();
-    await this.loadBook(this.tour.id);
+  async created () {
+    await this.loadTour()
+    await this.loadBook(this.tour.id)
   },
   methods: {
-    async loadTour() {
-      this.tour = await data.getTourDetail(this.$route.params.id);
+    async loadTour () {
+      this.tour = await data.getTourDetail(this.$route.params.id)
     },
-    async postBooking() {
-      console.log(this.start_date);
+    async postBooking () {
+      console.log(this.start_date)
       try {
-        await postBook({ start_date: this.start_date }, this.$route.params.id);
+        await postBook({ start_date: this.start_date }, this.$route.params.id)
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
-    async loadBook(tour_id) {
-      this.book = await getBook(tour_id);
-      var date = new Date();
-      var dateStart = new Date(this.book.start_date);
+    async loadBook (tour_id) {
+      this.book = await getBook(tour_id)
+      var date = new Date()
+      var dateStart = new Date(this.book.start_date)
       if (date.getTime() >= dateStart.getTime() || this.book.status) {
-        this.status = true;
-      } else this.status = false;
+        this.status = true
+      } else this.status = false
     },
-    async cancel() {
+    async cancel () {
       this.book = await cancelBook(
         { start_date: this.book.start_date },
         this.book.id
-      );
+      )
       if (this.book.status) {
-        this.status = true;
+        this.status = true
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
