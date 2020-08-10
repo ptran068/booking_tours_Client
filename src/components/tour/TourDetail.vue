@@ -23,9 +23,9 @@
         <div class="pt-5 pb-5">{{tour.policy}}</div>
         <hr />
         <div>
-          <p v-if="avg_score != 0 " class="d-inline mr-10">Rating: {{avg_score}}</p>
+          <p v-if="avg_score != 0 " class="d-inline mr-10 ">Rating: {{avg_score}}</p>
           <p v-else class="d-inline mr-10">Rating: No one has rated this!</p>
-          <button v-if="$currentUser.id" class="btn-sm btn-primary text-light d-inline" @click.stop="ratingDialog = true">Rating</button>
+          <button v-if="$currentUser.id" class="btn-sm btn-primary text-light float-right" @click.stop="ratingDialog = true">Rating</button>
           <v-dialog v-model="ratingDialog" max-width="320">
             <v-card>
               <v-card-title class="headline">This tour is great, isn't it?</v-card-title>

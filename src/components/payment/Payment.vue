@@ -115,6 +115,12 @@ export default {
       const tour = await getTour(this.$route.params.id)
       return tour
     },
+
+    async sendMail() {
+      const mail = await PaymentService.sendMail()
+      return mail
+    },
+
     submit () {
       this.$refs.elementsRef.submit()
     },
@@ -132,7 +138,10 @@ export default {
         data: data,
         id: this.$route.params.id
       })
-      this.$router.push({ path: '/complete' })
+      this.sendMail()
+
+      this.$router.push({ path: '/complete' });
+
     }
   },
   mounted () {

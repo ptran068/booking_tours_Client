@@ -4,7 +4,7 @@ import { API_URL } from '../.env.js'
 const getTours = async function (page = 1) {
   try {
     var offset = (page - 1) * 12
-    const response = await axios.get(`${API_URL}/tour/?offset=${offset}&limit=12`)
+    const response = await axios.get(`${API_URL}/tour?offset=${offset}&limit=12`)
     let tours = parseList(response)
     return tours.results
   } catch (error) {
