@@ -27,13 +27,18 @@
         <strong style="float: right;">
           <v-div @click="like" class="mr-6">
             <strong class="mr-2 pb-2">{{ review.like.length }}</strong>
-            <v-icon
+            <v-btn icon>
+              <v-icon
               v-if="review.like.indexOf($currentUser.id) > -1"
-              large class="pb-3"
+              medium class="pb-2"
               color="rgb(32, 120, 244)"
               >mdi-thumb-up</v-icon
             >
-            <v-icon v-else large class="pb-3" color="">mdi-thumb-up</v-icon> </v-div
+            <v-icon v-else medium class="pb-2" color="">mdi-thumb-up</v-icon>
+            </v-btn>
+            
+            
+             </v-div
           >{{ review.views }} Views
           </strong
         >

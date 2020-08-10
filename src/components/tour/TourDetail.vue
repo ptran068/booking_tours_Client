@@ -1,4 +1,3 @@
-/* eslint-disable vue/no-unused-components */
 <template>
   <div class="container-fluid">
     <div class="text-center mt-5">
@@ -162,6 +161,7 @@ export default {
       this.book = await getBook(tour_id)
       var date = new Date()
       var dateStart = new Date(this.book.start_date)
+
       if (date.getTime() >= dateStart.getTime() || this.book.status) {
         this.status = true
       } else this.status = false
