@@ -35,7 +35,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <button @click="ratingDialog = false" class="btn-sm btn-primary text-light mr-5">Cancel</button>
-                <button v-if="pk" class="btn-sm btn-primary text-light" @click="putRating">Update</button>
+                <button v-if="pk" class="btn-sm btn-primary text-light" @click="putRating">Rating</button>
                 <button v-else class="btn-sm btn-primary text-light" @click="postRating">Rating</button>
               </v-card-actions>
             </v-card>
