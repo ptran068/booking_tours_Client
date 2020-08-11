@@ -35,7 +35,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <button @click="ratingDialog = false" class="btn-sm btn-primary text-light mr-5">Cancel</button>
-                <button v-if="pk" class="btn-sm btn-primary text-light" @click="putRating">Update</button>
+                <button v-if="pk" class="btn-sm btn-primary text-light" @click="putRating">Rating</button>
                 <button v-else class="btn-sm btn-primary text-light" @click="postRating">Rating</button>
               </v-card-actions>
             </v-card>
@@ -162,15 +162,15 @@ export default {
     },
     async postRating () {
       try {
-        await postRating({ score: (this.score * 2) }, this.$route.params.id)
-        const tour = await data.getTourDetail(this.$route.params.id)
-        this.avg_score = tour.avg_rating.score__avg
         this.ratings = await getRating()
         for (let i = 0; i < this.ratings.length; i++) {
           if (this.ratings[i].user_id === this.$currentUser.id && this.ratings[i].tour_id.id === this.$route.params.id) {
             this.pk = this.ratings[i].id
           }
         }
+        await postRating({ score: (this.score * 2) }, this.$route.params.id)
+        const tour = await data.getTourDetail(this.$route.params.id)
+        this.avg_score = tour.avg_rating.score__avg
       } catch (error) {
         console.log(error)
       }
