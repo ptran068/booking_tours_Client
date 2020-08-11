@@ -23,9 +23,13 @@
         <div class="pt-5 pb-5">{{tour.policy}}</div>
         <hr />
         <div>
-          <p v-if="avg_score != 0 " class="d-inline mr-10 ">Rating: {{avg_score}}</p>
+          <p v-if="avg_score != 0 " class="d-inline mr-10">Rating: {{avg_score}}</p>
           <p v-else class="d-inline mr-10">Rating: No one has rated this!</p>
-          <button v-if="$currentUser.id" class="btn-sm btn-primary text-light float-right" @click.stop="ratingDialog = true">Rating</button>
+          <button
+            v-if="$currentUser.id"
+            class="btn-sm btn-primary text-light float-right"
+            @click.stop="ratingDialog = true"
+          >Rating</button>
           <v-dialog v-model="ratingDialog" max-width="320">
             <v-card>
               <v-card-title class="headline">This tour is great, isn't it?</v-card-title>
@@ -34,7 +38,10 @@
               </div>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <button @click="ratingDialog = false" class="btn-sm btn-primary text-light mr-5">Cancel</button>
+                <button
+                  @click="ratingDialog = false"
+                  class="btn-sm btn-primary text-light mr-5"
+                >Cancel</button>
                 <button v-if="pk" class="btn-sm btn-primary text-light" @click="putRating">Rating</button>
                 <button v-else class="btn-sm btn-primary text-light" @click="postRating">Rating</button>
               </v-card-actions>
@@ -85,7 +92,7 @@
             </v-card>
           </v-dialog>
         </div>
-        <div v-else>
+        <div v-else-if="$currentUser.id">
           <button class="btn btn-danger" @click.stop="cancelDialog=true">Cancel Book</button>
           <v-dialog v-model="cancelDialog" max-width="290">
             <v-card>
@@ -107,111 +114,122 @@
   </div>
 </template>
 <script>
-import ReviewList from '../review/ReviewList'
-import { data } from '../../services/data.service'
-import { postBook, getBook, cancelBook } from '../../services/book.service'
-import { postRating, getRating, putRating } from '../../services/rating.service'
+import ReviewList from "../review/ReviewList";
+import { data } from "../../services/data.service";
+import { postBook, getBook, cancelBook } from "../../services/book.service";
+import {
+  postRating,
+  getRating,
+  putRating,
+} from "../../services/rating.service";
 export default {
-  name: 'Tours',
+  name: "Tours",
   components: {
-    ReviewList
+    ReviewList,
   },
-  data () {
+  data() {
     return {
-      tour: '',
+      tour: "",
       dialog: false,
       status: true,
       ratingDialog: false,
       cancelDialog: false,
-      book: '',
+      book: "",
       start_date: new Date().toISOString().substr(0, 10),
       score: 5,
       menu2: false,
-      token: localStorage.getItem('token'),
+      token: localStorage.getItem("token"),
       avg_score: 0,
       ratings: [],
-      pk: null
-    }
+      pk: null,
+    };
   },
-  async created () {
-    await this.loadRating()
-    await this.loadTour()
-    await this.loadBook(this.tour.id)
+  async created() {
+    await this.loadRating();
+    await this.loadTour();
+    await this.loadBook(this.tour.id);
   },
   methods: {
-    async loadTour () {
-      this.tour = await data.getTourDetail(this.$route.params.id)
+    async loadTour() {
+      this.tour = await data.getTourDetail(this.$route.params.id);
       if (this.tour.avg_rating.score__avg !== null) {
-        this.avg_score = this.tour.avg_rating.score__avg
+        this.avg_score = this.tour.avg_rating.score__avg;
       }
     },
-    async loadRating () {
-      this.ratings = await getRating()
+    async loadRating() {
+      this.ratings = await getRating();
       for (let i = 0; i < this.ratings.length; i++) {
-        if (this.ratings[i].user_id === this.$currentUser.id && this.ratings[i].tour_id.id === this.$route.params.id) {
-          this.pk = this.ratings[i].id
+        if (
+          this.ratings[i].user_id === this.$currentUser.id &&
+          this.ratings[i].tour_id.id === this.$route.params.id
+        ) {
+          this.pk = this.ratings[i].id;
         }
       }
     },
-    async postBooking () {
+    async postBooking() {
       try {
-        await postBook({ start_date: this.start_date }, this.$route.params.id)
+        await postBook({ start_date: this.start_date }, this.$route.params.id);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
-    async postRating () {
+    async postRating() {
       try {
-        this.ratings = await getRating()
+        this.ratings = await getRating();
         for (let i = 0; i < this.ratings.length; i++) {
-          if (this.ratings[i].user_id === this.$currentUser.id && this.ratings[i].tour_id.id === this.$route.params.id) {
-            this.pk = this.ratings[i].id
+          if (
+            this.ratings[i].user_id === this.$currentUser.id &&
+            this.ratings[i].tour_id.id === this.$route.params.id
+          ) {
+            this.pk = this.ratings[i].id;
           }
         }
         if (this.pk !== null) {
-          await putRating({ score: (this.score * 2) }, this.pk)
-          const tour = await data.getTourDetail(this.$route.params.id)
-          this.avg_score = tour.avg_rating.score__avg
+          await putRating({ score: this.score * 2 }, this.pk);
+          const tour = await data.getTourDetail(this.$route.params.id);
+          this.avg_score = tour.avg_rating.score__avg;
         } else {
-          await postRating({ score: (this.score * 2) }, this.$route.params.id)
-          const tour = await data.getTourDetail(this.$route.params.id)
-          this.avg_score = tour.avg_rating.score__avg
+          await postRating({ score: this.score * 2 }, this.$route.params.id);
+          const tour = await data.getTourDetail(this.$route.params.id);
+          this.avg_score = tour.avg_rating.score__avg;
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-      this.ratingDialog = false
+      this.ratingDialog = false;
     },
-    async putRating () {
+    async putRating() {
       try {
-        await putRating({ score: (this.score * 2) }, this.pk)
-        const tour = await data.getTourDetail(this.$route.params.id)
-        this.avg_score = tour.avg_rating.score__avg
+        await putRating({ score: this.score * 2 }, this.pk);
+        const tour = await data.getTourDetail(this.$route.params.id);
+        this.avg_score = tour.avg_rating.score__avg;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-      this.ratingDialog = false
+      this.ratingDialog = false;
     },
-    async loadBook (tour_id) {
-      this.book = await getBook(tour_id)
-      var date = new Date()
-      var dateStart = new Date(this.book.start_date)
-
-      if (date.getTime() >= dateStart.getTime() || this.book.status) {
-        this.status = true
-      } else this.status = false
+    async loadBook(tour_id) {
+      this.book = await getBook(tour_id);
+      if (this.book.status != null) {
+        var date = new Date();
+        var dateStart = new Date(this.book.start_date);
+        if (date.getTime() >= dateStart.getTime() || this.book.status) {
+          this.status = true;
+        } else this.status = false;
+      } else this.status = true;
     },
-    async cancel () {
+    async cancel() {
       this.book = await cancelBook(
         { start_date: this.book.start_date },
         this.book.id
-      )
+      );
       if (this.book.status) {
-        this.status = true
+        this.status = true;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

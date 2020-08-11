@@ -82,13 +82,7 @@ export default {
 
   methods: {
     async searchTour() {
-      const listTours = await TourService.search(this.title)
-      if (listTours.data && listTours.data.results) {
-        this.tours = listTours.data.results
-      }
-      $store.commit('tour/SET-TOURS', this.tours)
-      this.$router.push({ path: '/search' });
-
+      this.$router.push( { name: 'search', params: { content: this.title } });
     },
     openLoginDialog (isLogin) {
       this.defaultLoginDialogTab = isLogin ? 'login' : 'register'
