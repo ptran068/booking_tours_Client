@@ -44,7 +44,6 @@
             <v-card-actions>
               <v-spacer></v-spacer>
 
-
               <v-btn color="green darken-1" text @click="dialogMsg=false">
                 Ok
               </v-btn>
@@ -80,7 +79,7 @@
                   >mdi-thumb-up</v-icon
                 >
                 <v-icon v-else medium class="pb-2" color=""
-                  >mdi-thumb-up</v-icon> 
+                  >mdi-thumb-up</v-icon>
                 </v-btn>
                 </v-div
               >{{ review.views }} Views
@@ -121,86 +120,83 @@
 </template>
 
 <script>
-import { getReviewByUser, deleteReview } from "../../services/review.service";
-import { likeReview } from "../../services/reviewDetail.service";
+import { getReviewByUser, deleteReview } from '../../services/review.service'
+import { likeReview } from '../../services/reviewDetail.service'
 export default {
-  name: "ReviewBy",
+  name: 'ReviewBy',
   props: {
     tour_id: String
   },
-  data() {
+  data () {
     return {
       dialog: false,
       reviews: [],
-      reviewId: "",
-      tourId: "",
+      reviewId: '',
+      tourId: '',
       page: 0,
       dialogMsg: false,
       msg: '',
       load: true,
-      status: "",
+      status: '',
       titleRules: [
-        v => !!v || "Title is required",
-        v => (v && v.length <= 20) || "Title must be less than 20 characters"
+        v => !!v || 'Title is required',
+        v => (v && v.length <= 20) || 'Title must be less than 20 characters'
       ],
-      contentRules: [v => !!v || "Content is required"]
-    };
+      contentRules: [v => !!v || 'Content is required']
+    }
   },
-  async created() {
-    await this.loadReviews();
+  async created () {
+    await this.loadReviews()
   },
   methods: {
-    async loadReviews() {
-      this.reviews = [];
-      this.reviews = await getReviewByUser(this.page);
+    async loadReviews () {
+      this.reviews = []
+      this.reviews = await getReviewByUser(this.page)
       if (this.reviews.length < 10) {
-        this.page = 0;
+        this.page = 0
       }
     },
-    handleEmail(email) {
-      var index = email.indexOf("@");
-      return email.slice(0, index);
+    handleEmail (email) {
+      var index = email.indexOf('@')
+      return email.slice(0, index)
     },
 
-    async paginator() {
-      this.load = false;
-      this.page += 1;
-      var rvs = await getReviewByUser(this.page);
+    async paginator () {
+      this.load = false
+      this.page += 1
+      var rvs = await getReviewByUser(this.page)
       if (rvs.length) {
         for (var item in rvs) {
-          this.reviews.push(rvs[item]);
+          this.reviews.push(rvs[item])
         }
-        this.load = true;
-      } else this.page = 0;
-      if (rvs < 10) this.page = 0;
+        this.load = true
+      } else this.page = 0
+      if (rvs < 10) this.page = 0
     },
-    async like(review_id, index) {
-      var like = await likeReview(review_id);
-      this.reviews[index].like = like;
+    async like (review_id, index) {
+      var like = await likeReview(review_id)
+      this.reviews[index].like = like
     },
-    async handleAction() {
-        console.log(this.reviewId)
-        console.log(this.tourId)
-        debugger
-      var status = await deleteReview(this.reviewId, this.tourId);
-      this.dialog = false;
+    async handleAction () {
+      console.log(this.reviewId)
+      console.log(this.tourId)
+      debugger
+      var status = await deleteReview(this.reviewId, this.tourId)
+      this.dialog = false
       if (status) {
-          this.reviews.pop(this.reviews[this.index]);
-          this.msg = 'Deleted successfully'
-      }
-      else this.msg = 'Delete failed'
+        this.reviews.pop(this.reviews[this.index])
+        this.msg = 'Deleted successfully'
+      } else this.msg = 'Delete failed'
       this.dialogMsg = true
-
-      
     },
-    notice(review_id, tour_id, index) {
-      this.reviewId = review_id;
-      this.tourId = tour_id;
-      this.index = index;
-      this.dialog = true;
+    notice (review_id, tour_id, index) {
+      this.reviewId = review_id
+      this.tourId = tour_id
+      this.index = index
+      this.dialog = true
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped></style>

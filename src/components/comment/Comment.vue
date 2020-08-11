@@ -77,75 +77,74 @@
 </template>
 
 <script>
-import { data, postComment } from "../../services/comment.service";
+import { data, postComment } from '../../services/comment.service'
 export default {
-  name: "Comments",
+  name: 'Comments',
   props: {
     review_id: String
   },
-  data() {
+  data () {
     return {
       comments: [],
-      content: "",
-      status: "",
+      content: '',
+      status: '',
       msg: '',
-      dialogMsg: "",
+      dialogMsg: '',
       page: 0,
       load: true
-    };
+    }
   },
-  async created() {
-    await this.loadComments(this.review_id);
+  async created () {
+    await this.loadComments(this.review_id)
   },
   methods: {
-    async loadComments(review_id) {
-      this.comments = [];
-      this.comments = await data.getComments(review_id);
+    async loadComments (review_id) {
+      this.comments = []
+      this.comments = await data.getComments(review_id)
       if (this.comments.length) {
-        this.page = 1;
-      } else this.page = 0;
+        this.page = 1
+      } else this.page = 0
     },
-    handleEmail(email) {
-      var index = email.indexOf("@");
-      return email.slice(0, index);
+    handleEmail (email) {
+      var index = email.indexOf('@')
+      return email.slice(0, index)
     },
-    clear() {
-      this.$refs.form.reset();
+    clear () {
+      this.$refs.form.reset()
     },
-    async submit() {
+    async submit () {
       if (this.content) {
-        this.status = "Uploading...";
+        this.status = 'Uploading...'
         var new_comment = await postComment({
           content: this.content,
           review: this.review_id
-        });
-        if (new_comment!=null) {
+        })
+        if (new_comment != null) {
           this.msg = 'Commented successfully'
-          this.$refs.form.reset();
-          this.comments.unshift(new_comment);
-          this.status = "";
-        }
-        else {
+          this.$refs.form.reset()
+          this.comments.unshift(new_comment)
+          this.status = ''
+        } else {
           this.msg = 'Comment failed'
         }
         this.dialogMsg = true
       }
     },
-    async paginator() {
-      this.load = false;
-      this.page += 1;
-      var cmts = await data.getComments(this.review_id, this.page);
+    async paginator () {
+      this.load = false
+      this.page += 1
+      var cmts = await data.getComments(this.review_id, this.page)
       if (cmts.length) {
         for (var item in cmts) {
-          this.comments.push(cmts[item]);
+          this.comments.push(cmts[item])
         }
-        this.load = true;
-      } else this.page = 0;
+        this.load = true
+      } else this.page = 0
     }
   },
 
   computed: {}
-};
+}
 </script>
 
 <style></style>

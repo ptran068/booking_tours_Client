@@ -116,7 +116,7 @@ export default {
       return tour
     },
 
-    async sendMail() {
+    async sendMail () {
       const mail = await PaymentService.sendMail()
       return mail
     },
@@ -140,8 +140,7 @@ export default {
       })
       this.sendMail()
 
-      this.$router.push({ path: '/complete' });
-
+      this.$router.push({ path: '/complete' })
     }
   },
   mounted () {

@@ -16,7 +16,7 @@
             </div>
             <div class="display-description">
                 desss
-            </div>	
+            </div>
         </div>
         
     </div>
@@ -32,7 +32,7 @@ export default {
 
 <style scoped>
 .main {
-    display:flex 
+    display:flex
 }
 .img {
     width: 300px;
@@ -55,5 +55,3 @@ export default {
 }
 
 </style>>
-
-

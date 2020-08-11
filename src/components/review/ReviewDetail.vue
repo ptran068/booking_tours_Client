@@ -37,7 +37,6 @@
             <v-icon v-else medium class="pb-2" color="">mdi-thumb-up</v-icon>
             </v-btn>
             
-            
              </v-div
           >{{ review.views }} Views
           </strong

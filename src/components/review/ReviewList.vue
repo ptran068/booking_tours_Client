@@ -20,8 +20,6 @@
         </v-dialog>
       </v-row>
 
-
-
     <v-form ref="form">
       <v-text-field
         outlined
@@ -133,10 +131,9 @@ export default {
     async loadReviews (tour_id) {
       this.reviews = []
       this.reviews = await data.getReviews(tour_id)
-      if (this.reviews.length<12) {
+      if (this.reviews.length < 12) {
         this.page = 0
-      }
-      else this.page = 1
+      } else this.page = 1
     },
     handleEmail (email) {
       var index = email.indexOf('@')
@@ -155,15 +152,13 @@ export default {
         },
         formData
       )
-      if(new_review!=null)
-      {
+      if (new_review != null) {
         this.$refs.form.reset()
         this.reviews.unshift(new_review)
         this.status = ''
         this.msg = 'Succesfully'
         this.dialogMsg = true
-      }
-      else {
+      } else {
         this.msg = 'failed'
         this.dialogMsg = false
       }
