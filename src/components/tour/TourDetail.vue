@@ -12,8 +12,8 @@
       </div>
       <div class="col-sm-12 col-md-6 col-lg-6">
         <div>
-          <small>Created By: {{tour.created_by.last_name}} {{tour.created_by.first_name}}</small>
-          <small style="float: right;">Views: {{tour.views}}</small>
+          <small><strong>Created By: </strong>{{tour.created_by.last_name}} {{tour.created_by.first_name}}</small>
+          <small style="float: right;"><strong>Views: </strong>{{tour.views}}</small>
         </div>
         <hr />
         <div class="pt-5 pb-5">{{tour.description}}</div>
@@ -21,16 +21,16 @@
         <div class="pt-5 pb-5">{{tour.policy}}</div>
         <hr>
         <p v-if="tour.duration === 1">Durations: {{tour.duration}} day</p>
-        <p v-else>Durations: {{tour.duration}} days</p>
+        <p v-else><strong>Durations: </strong>{{tour.duration}} days</p>
         <hr />
         <div>
-          <p class="d-inline mr-10" v-if="avg_score != 0 ">Rating: <v-rating
+          <p class="d-inline mr-10" v-if="avg_score != 0 "><strong>Rating: </strong> <v-rating
             v-model="avg_score"
             half-increments
             readonly
             class="d-inline"
           ></v-rating> ({{avg_score}} / 5)</p>
-          <p v-else class="d-inline mr-10">Rating: No one has rated this!</p>
+          <p v-else class="d-inline mr-10"><strong>Rating: </strong> No one has rated this!</p>
           <button
             v-if="$currentUser.id"
             class="btn-sm btn-primary text-light float-right"
@@ -55,6 +55,7 @@
           </v-dialog>
         </div>
         <hr />
+        <div class="mb-5"><strong>Tour quantity:</strong> {{tour.limit_booking}}</div>
         <div v-if="status">
           <button
             class="btn btn-primary text-light mt-5 mb-5 d-inline"
@@ -90,12 +91,12 @@
                 <v-dialog v-model="dialogNotifi" max-width="350">
                   <v-card>
                     <v-card-title class="headline">Notice</v-card-title>
-                      <v-card-text>You have {{msg}} booked</v-card-text>
+                      <v-card-text>{{msg}}</v-card-text>
                       <v-card-text v-if="msg === 'successfully'">Start Day: {{start_date}}</v-card-text>
                       <v-card-text v-if="msg === 'successfully'">End Day: {{end_date}}</v-card-text>
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                          <v-btn v-if="msg === 'failed'" color="green darken-1" text @click="dialogNotifi = false">Try again!</v-btn>
+                          <v-btn v-if="msg === 'Day tour limit is exceeded'" color="green darken-1" text @click="dialogNotifi = false, dialog = false">Try again!</v-btn>
                           <router-link
                           v-else
                             :to="{name: 'payment', params: { id: tour.id}}"
@@ -197,7 +198,7 @@ export default {
         this.dialogNotifi = true
       } catch (error) {
         console.log(error)
-        this.msg = 'failed'
+        this.msg = 'Day tour limit is exceeded'
         this.dialogNotifi = true
       }
     },
