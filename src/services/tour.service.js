@@ -13,11 +13,11 @@ class TourService extends BaseService {
     return 'tour'
   }
   
-  search (title) {
-    const charge = this.request({ auth: true }).get(`/${this.entity}?title=${title}`)
+  search (title, page = 1) {
+    var offset = (page - 1) * 12
+    const charge = this.request({ auth: true }).get(`/${this.entity}?title=${title}&limit=12&offset=${offset}`)
     return charge
   }
-
 }
   
 export default new TourService()

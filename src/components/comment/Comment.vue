@@ -1,6 +1,7 @@
 <template>
   <div>
     <div>
+      <h3>Comment:</h3>
       <v-row justify="center">
         <v-dialog v-model="dialogMsg" max-width="290">
           <v-card>
@@ -21,7 +22,7 @@
         </v-dialog>
       </v-row>
     </div>
-    <v-form ref="form">
+    <v-form v-if="$currentUser.id" ref="form">
       <v-textarea
         outlined
         name="input-7-4"

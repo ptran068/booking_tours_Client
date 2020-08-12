@@ -5,25 +5,31 @@
       <v-col
         :cols="6"
       >
+        <h4 class="text-center mb-5">Information about the tour</h4>
         <div>
             <v-card
               class="mx-auto"
-              max-width="400"
+              max-width="500"
             >
               <v-img
+                v-if="tourDetail.images[0]"
                 class="white--text align-end"
                 height="200px"
                 :src="tourDetail.images[0].link"
               >
                 <v-card-title>{{tourDetail.title}}</v-card-title>
               </v-img>
-
-              <v-card-subtitle class="pb-0">{{tourDetail.amount / 100}}</v-card-subtitle>
-
+              <v-card-subtitle class="pb-0"><strong>Booked At: </strong> {{book.created_at}}</v-card-subtitle>
+              <hr>
               <v-card-text class="text--primary">
-                <div>{{tourDetail.adress}}</div>
-
-                <div>{{tourDetail.description}}</div>
+                <div><strong>Address: </strong>{{tourDetail.address}}</div>
+                <div><strong>Amount: </strong>{{tourDetail.amount / 100}} $</div>
+                <br>
+                <div><strong>Description: </strong>{{tourDetail.description}}</div>
+                <hr>
+                <div><strong>Schedule</strong></div>
+                <div>- Star day: {{book.start_date}}</div>
+                <div>- End day: {{book.end_date}}</div>
               </v-card-text>
 
               <v-card-actions>
@@ -37,8 +43,9 @@
                 <v-btn
                   color="orange"
                   text
+                  @click="print"
                 >
-                  Explore
+                  Print
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -47,7 +54,7 @@
       <v-col :cols="6">
         <div class="wrapper">
           <div class="title">
-            <h4>Payment Here </h4>
+            <h4 class="text-center mb-5">Payment Here </h4>
           </div>
           <stripe-elements
             ref="elementsRef"
@@ -58,7 +65,7 @@
             @loading="loading = $event"
           >
           </stripe-elements>
-          <div class="text-center">
+        <div class="text-center">
     <v-dialog
       v-model="dialog"
       width="500"
@@ -89,6 +96,7 @@ import { getTour } from '../../services/tour.service'
 import PaymentService from '../../services/payment.service'
 // eslint-disable-next-line no-unused-vars
 import { PUBLISH_ABLE_KEY } from '../../.env'
+import { getBook } from '../../services/book.service'
 export default {
   components: {
     StripeElements
@@ -101,11 +109,17 @@ export default {
     publishableKey: 'pk_test_51HARcVFZiqUk9BtoWsPZfsz6nnXVGCTi8ioUPx0Gfsl61WyNGFqO5sM5cK6tcH9JVYj8QoxVFm5hkASGHGucFXGx00pgyLfWmV',
     token: null,
     charge: null,
-    description: ''
+    description: '',
+    book: null
   }),
   methods: {
+    async loadBook () {
+      const book = await getBook(this.$route.params.id)
+      return book
+    },
     async init () {
       const tour = await this.getTour()
+      this.book = await this.loadBook()
       this.amount = tour.data.amount
       this.description = tour.data.title
       this.tourDetail = tour.data
@@ -120,7 +134,9 @@ export default {
       const mail = await PaymentService.sendMail()
       return mail
     },
-
+    print () {
+      print()
+    },
     submit () {
       this.$refs.elementsRef.submit()
     },

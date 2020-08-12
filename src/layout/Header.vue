@@ -55,8 +55,6 @@
 import LoginDialog from '../components/user/Login'
 import { makeLogout } from '../services/auth.service'
 import { mapGetters } from 'vuex'
-import TourService from '../services/tour.service'
-import $store from '../store'
 
 export default {
 
@@ -81,14 +79,8 @@ export default {
   },
 
   methods: {
-    async searchTour() {
-      const listTours = await TourService.search(this.title)
-      if (listTours.data && listTours.data.results) {
-        this.tours = listTours.data.results
-      }
-      $store.commit('tour/SET-TOURS', this.tours)
-      this.$router.push({ path: '/search' });
-
+    async searchTour () {
+      this.$router.push({ name: 'search', params: { content: this.title } })
     },
     openLoginDialog (isLogin) {
       this.defaultLoginDialogTab = isLogin ? 'login' : 'register'

@@ -53,9 +53,9 @@ export const routes = [
     meta: { title: `${DOMAIN_TITLE} | manage` }
   },
   {
-    path: '/search',
+    path: '/search?search=:content',
     name: 'search',
     component: SearchTour,
     meta: { title: `${DOMAIN_TITLE} | results` }
-  },
+  }
 ]

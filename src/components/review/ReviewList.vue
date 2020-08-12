@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2>Review:</h2>
     <v-row justify="center">
         <v-dialog v-model="dialogMsg" max-width="290">
           <v-card>
@@ -20,7 +21,7 @@
         </v-dialog>
       </v-row>
 
-    <v-form ref="form">
+    <v-form v-if="$currentUser.id" ref="form">
       <v-text-field
         outlined
         v-model="title"

@@ -2,12 +2,12 @@ import { API_URL } from '../.env'
 import axios from 'axios'
 import { options } from './headers'
 
-export async function postBook ({ start_date }, params) {
+export async function postBook ({ start_date, end_date }, params) {
   const token = getToken()
   const auth = {
     headers: { Authorization: 'token ' + token }
   }
-  const booking = await axios.post(`${API_URL}/booking/?tour_id=${params}`, { start_date }, auth)
+  const booking = await axios.post(`${API_URL}/booking/?tour_id=${params}`, { start_date, end_date }, auth)
     .then(res => console.log(res))
   return booking
 }
@@ -29,9 +29,9 @@ const parseData = response => {
   return response.data
 }
 
-export async function cancelBook ({ start_date }, book_id) {
+export async function cancelBook ({ start_date, end_date }, book_id) {
   try {
-    const response = await axios.put(`${API_URL}/booking/` + book_id, { start_date, status: 1 }, options)
+    const response = await axios.put(`${API_URL}/booking/` + book_id, { start_date, end_date, status: 1 }, options)
     console.log(response)
     return response.data
   } catch (error) {

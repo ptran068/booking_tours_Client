@@ -48,7 +48,7 @@
       <div class="pt-5 pb-5">{{ review.content }}</div>
       <hr />
 
-      <Comment v-bind:review_id="review.id"></Comment>
+      <Comment  v-bind:review_id="review.id"></Comment>
     </div>
   </div>
 </template>

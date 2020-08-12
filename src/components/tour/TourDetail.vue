@@ -7,10 +7,8 @@
       <h1 class="text-center">{{ tour.title }}</h1>
     </div>
     <div class="row border border-secondary rounded-lg m-1">
-      <div class="col-sm-12 col-md-6 col-lg-6">
-        <div class="text-center">
+      <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center border-secondary border-right">
           <img v-if="tour.images[0]" :src="tour.images[0].link" alt class="rounded-lg" width="70%" />
-        </div>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-6">
         <div>
@@ -21,22 +19,37 @@
         <div class="pt-5 pb-5">{{tour.description}}</div>
         <hr />
         <div class="pt-5 pb-5">{{tour.policy}}</div>
+        <hr>
+        <p v-if="tour.duration === 1">Durations: {{tour.duration}} day</p>
+        <p v-else>Durations: {{tour.duration}} days</p>
         <hr />
         <div>
-          <p v-if="avg_score != 0 " class="d-inline mr-10 ">Rating: {{avg_score}}</p>
+          <p class="d-inline mr-10" v-if="avg_score != 0 ">Rating: <v-rating
+            v-model="avg_score"
+            half-increments
+            readonly
+            class="d-inline"
+          ></v-rating> ({{avg_score}} / 5)</p>
           <p v-else class="d-inline mr-10">Rating: No one has rated this!</p>
-          <button v-if="$currentUser.id" class="btn-sm btn-primary text-light float-right" @click.stop="ratingDialog = true">Rating</button>
+          <button
+            v-if="$currentUser.id"
+            class="btn-sm btn-primary text-light float-right"
+            @click.stop="ratingDialog = true"
+          >Rating</button>
           <v-dialog v-model="ratingDialog" max-width="320">
             <v-card>
               <v-card-title class="headline">This tour is great, isn't it?</v-card-title>
               <div class="text-center">
-                <v-rating v-model="score"></v-rating>
+                <v-rating v-model="score"
+                ></v-rating>
               </div>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <button @click="ratingDialog = false" class="btn-sm btn-primary text-light mr-5">Cancel</button>
-                <button v-if="pk" class="btn-sm btn-primary text-light" @click="putRating">Rating</button>
-                <button v-else class="btn-sm btn-primary text-light" @click="postRating">Rating</button>
+                <button
+                  @click="ratingDialog = false"
+                  class="btn-sm btn-primary text-light mr-5"
+                >Cancel</button>
+                <button class="btn-sm btn-primary text-light" @click="postRating">Rating</button>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -48,7 +61,7 @@
             @click.stop="dialog = true"
           >Booking</button>
 
-          <v-dialog v-model="dialog" persistent max-width="600px">
+          <v-dialog v-if="$currentUser.id" v-model="dialog" persistent max-width="600px">
             <v-card>
               <v-card-title class="headline">Chose date to start tour</v-card-title>
               <v-card-text>
@@ -74,18 +87,40 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <button @click="dialog = false" class="btn btn-primary text-light mr-5">Cancel</button>
-                <router-link
-                  @click="dialog = false"
-                  :to="{name: 'payment', params: { id: tour.id}}"
-                >
-                  <button class="btn btn-primary text-light" @click="postBooking">Payment</button>
-                </router-link>
+                <v-dialog v-model="dialogNotifi" max-width="350">
+                  <v-card>
+                    <v-card-title class="headline">Notice</v-card-title>
+                      <v-card-text>You have {{msg}} booked</v-card-text>
+                      <v-card-text v-if="msg === 'successfully'">Start Day: {{start_date}}</v-card-text>
+                      <v-card-text v-if="msg === 'successfully'">End Day: {{end_date}}</v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                          <v-btn v-if="msg === 'failed'" color="green darken-1" text @click="dialogNotifi = false">Try again!</v-btn>
+                          <router-link
+                          v-else
+                            :to="{name: 'payment', params: { id: tour.id}}"
+                          >
+                            <button class="btn btn-primary text-light mr-5" @click="postBooking">Payment</button>
+                          </router-link>
+                    </v-card-actions>
+                    </v-card>
+                </v-dialog>
+                <button class="btn btn-primary text-light mr-5" @click="postBooking">Booking</button>
               </v-card-actions>
             </v-card>
           </v-dialog>
+          <v-dialog v-else v-model="dialog" max-width="290">
+            <v-card>
+              <v-card-title class="headline">Notice</v-card-title>
+                <v-card-text>You must login</v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="green darken-1" text @click="dialog = false">Ok</v-btn>
+                </v-card-actions>
+              </v-card>
+          </v-dialog>
         </div>
-        <div v-else>
+        <div v-else-if="$currentUser.id">
           <button class="btn btn-danger" @click.stop="cancelDialog=true">Cancel Book</button>
           <v-dialog v-model="cancelDialog" max-width="290">
             <v-card>
@@ -110,7 +145,11 @@
 import ReviewList from '../review/ReviewList'
 import { data } from '../../services/data.service'
 import { postBook, getBook, cancelBook } from '../../services/book.service'
-import { postRating, getRating, putRating } from '../../services/rating.service'
+import {
+  postRating,
+  getRating,
+  putRating
+} from '../../services/rating.service'
 export default {
   name: 'Tours',
   components: {
@@ -118,75 +157,71 @@ export default {
   },
   data () {
     return {
-      tour: '',
+      tour: null,
+      msg: null,
       dialog: false,
       status: true,
       ratingDialog: false,
       cancelDialog: false,
-      book: '',
+      dialogNotifi: false,
+      book: null,
       start_date: new Date().toISOString().substr(0, 10),
+      end_date: null,
       score: 5,
       menu2: false,
       token: localStorage.getItem('token'),
       avg_score: 0,
-      ratings: [],
-      pk: null
+      duration: 0
     }
   },
   async created () {
-    await this.loadRating()
     await this.loadTour()
     await this.loadBook(this.tour.id)
   },
   methods: {
     async loadTour () {
       this.tour = await data.getTourDetail(this.$route.params.id)
+      this.duration = this.tour.duration
       if (this.tour.avg_rating.score__avg !== null) {
-        this.avg_score = this.tour.avg_rating.score__avg
-      }
-    },
-    async loadRating () {
-      this.ratings = await getRating()
-      for (let i = 0; i < this.ratings.length; i++) {
-        if (this.ratings[i].user_id === this.$currentUser.id && this.ratings[i].tour_id.id === this.$route.params.id) {
-          this.pk = this.ratings[i].id
-        }
+        this.avg_score = Math.round((this.tour.avg_rating.score__avg * 10)) / 10
       }
     },
     async postBooking () {
       try {
-        await postBook({ start_date: this.start_date }, this.$route.params.id)
+        let end = new Date(this.start_date)
+        var dateValue = end.getDate() + this.duration
+        end.setDate(dateValue)
+        this.end_date = end.toISOString().substr(0, 10)
+        await postBook({ start_date: this.start_date, end_date: this.end_date }, this.$route.params.id)
+        this.msg = 'successfully'
+        this.dialogNotifi = true
       } catch (error) {
         console.log(error)
+        this.msg = 'failed'
+        this.dialogNotifi = true
       }
     },
     async postRating () {
       try {
-        this.ratings = await getRating()
-        for (let i = 0; i < this.ratings.length; i++) {
-          if (this.ratings[i].user_id === this.$currentUser.id && this.ratings[i].tour_id.id === this.$route.params.id) {
-            this.pk = this.ratings[i].id
+        const ratings = await getRating()
+        let pk = null
+        for (let i = 0; i < ratings.length; i++) {
+          if (
+            ratings[i].user_id === this.$currentUser.id &&
+            ratings[i].tour_id.id === this.$route.params.id
+          ) {
+            pk = ratings[i].id
           }
         }
-        if (this.pk !== null) {
-          await putRating({ score: (this.score * 2) }, this.pk)
+        if (pk !== null) {
+          await putRating({ score: this.score }, pk)
           const tour = await data.getTourDetail(this.$route.params.id)
-          this.avg_score = tour.avg_rating.score__avg
+          this.avg_score = Math.round((tour.avg_rating.score__avg * 10)) / 10
         } else {
-          await postRating({ score: (this.score * 2) }, this.$route.params.id)
+          await postRating({ score: this.score }, this.$route.params.id)
           const tour = await data.getTourDetail(this.$route.params.id)
-          this.avg_score = tour.avg_rating.score__avg
+          this.avg_score = Math.round((tour.avg_rating.score__avg * 10)) / 10
         }
-      } catch (error) {
-        console.log(error)
-      }
-      this.ratingDialog = false
-    },
-    async putRating () {
-      try {
-        await putRating({ score: (this.score * 2) }, this.pk)
-        const tour = await data.getTourDetail(this.$route.params.id)
-        this.avg_score = tour.avg_rating.score__avg
       } catch (error) {
         console.log(error)
       }
@@ -194,16 +229,17 @@ export default {
     },
     async loadBook (tour_id) {
       this.book = await getBook(tour_id)
-      var date = new Date()
-      var dateStart = new Date(this.book.start_date)
-
-      if (date.getTime() >= dateStart.getTime() || this.book.status) {
-        this.status = true
-      } else this.status = false
+      if (this.book.status != null) {
+        var date = new Date()
+        var dateStart = new Date(this.book.start_date)
+        if (date.getTime() >= dateStart.getTime() || this.book.status) {
+          this.status = true
+        } else this.status = false
+      } else this.status = true
     },
     async cancel () {
       this.book = await cancelBook(
-        { start_date: this.book.start_date },
+        { start_date: this.book.start_date, end_date: this.book.end_date },
         this.book.id
       )
       if (this.book.status) {
