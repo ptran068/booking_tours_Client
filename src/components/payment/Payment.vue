@@ -150,6 +150,7 @@ export default {
       this.sendTokenToServer(this.charge)
     },
     sendTokenToServer (data) {
+      debugger
       PaymentService.charge({
         data: data,
         id: this.$route.params.id

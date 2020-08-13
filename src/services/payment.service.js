@@ -19,13 +19,13 @@ class PaymentService extends BaseService {
     return charge
   }
 
-    getTransactions() {
-      return this.request({auth: true}).get(`/${this.entity}`)
-    }
+  getTransactions () {
+    return this.request({ auth: true }).get(`/${this.entity}`)
+  }
 
-    sendMail() {
-      return this.request({auth: true}).post(`/${this.entity}/mail`)
-    }
+  sendMail () {
+    return this.request({ auth: true }).post(`/${this.entity}/mail`)
+  }
 }
   
 export default new PaymentService()
