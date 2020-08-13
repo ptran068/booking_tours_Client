@@ -1,19 +1,45 @@
 <template>
   <div>
     <div>
-      <h3>Comment:</h3>
+      <h2>Customer Comment</h2>
+      <div v-for="item in comments" :key="item.id" style="background-color: #f7f9fa" class="rounded-lg p-3 mb-4">
+      <section class="post-heading">
+        <div class="row">
+          <div class="col-md-2">
+            <div class="media">
+              <div class="media-left"></div>
+              <div class="media-body">
+                  <div class="d-flex mt-3">
+                    <img src="../../assets/img/avatar.png" alt="" class="rounded-circle" style="height:40px; width:40px">
+                    <div class="d-inline ml-2">
+                      <small class="d-block" >Comment by</small>
+                      <small><strong>{{item.created_by.last_name}} {{item.created_by.first_name}}</strong></small>
+                    </div>
+                  </div>
+                <small class="text-secondary">{{ $showTime(item.created_at) }}</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-1">
+            <a href="#">
+              <i class="glyphicon glyphicon-chevron-down"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+      <section class="post-body">
+        <p>" {{ item.content }}. "</p>
+      </section>
+    </div>
       <v-row justify="center">
         <v-dialog v-model="dialogMsg" max-width="290">
           <v-card>
             <v-card-title class="headline">Notice</v-card-title>
-
             <v-card-text>
               {{ msg }}
             </v-card-text>
-
             <v-card-actions>
               <v-spacer></v-spacer>
-
               <v-btn color="green darken-1" text @click="dialogMsg = false">
                 Ok
               </v-btn>
@@ -31,41 +57,11 @@
       ></v-textarea>
       <v-card-actions>
         <v-d>{{ status }}</v-d>
-        
         <v-btn v-if="$currentUser.id" color="primary" class="mr-4" @click="submit">Submit</v-btn>
         <v-btn v-else :disabled="!valid" color="primary" class="mr-4" > Submit </v-btn>
         <v-btn color="error" @click="clear">Clear</v-btn>
       </v-card-actions>
-      <hr />
     </v-form>
-    <div v-for="item in comments" :key="item.id">
-      <section class="post-heading">
-        <div class="row">
-          <div class="col-md-11">
-            <div class="media">
-              <div class="media-left"></div>
-              <div class="media-body">
-                <a href="#" class="anchor-username">
-                  <h4 class="media-heading">
-                    {{ handleEmail(item.created_by.email) }}
-                  </h4>
-                </a>
-                <small>{{ $showTime(item.created_at) }}</small>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-1">
-            <a href="#">
-              <i class="glyphicon glyphicon-chevron-down"></i>
-            </a>
-          </div>
-        </div>
-      </section>
-      <section class="post-body">
-        <p>{{ item.content }}.</p>
-      </section>
-      <hr />
-    </div>
     <div v-if="page" class="text-center">
       <button v-if="load" @click="paginator" class="btn btn-primary text-light">
         See more

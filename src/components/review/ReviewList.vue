@@ -1,7 +1,32 @@
 <template>
   <div>
-    <h2>Review:</h2>
-    <v-row justify="center">
+    <h2>Customer reviews</h2>
+    <div class="row border-bottom" style="margin-bottom: 15px" v-for="review in reviews" :key="review.id">
+      <div class="col-sm-12 col-md-8 col-lg-8">
+        <h5><strong>{{ review.title }}</strong></h5>
+        <p class="card-text" style=" overflow: hidden; text-overflow: ellipsis; display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;">{{ review.content }}</p>
+        <router-link style="text-decoration: none "
+              :to="{ name: 'review', params: { id: review.id } }"
+            >Read more ...</router-link>
+        <div class="d-flex mt-3">
+          <img src="../../assets/img/avatar.png" alt="" class="rounded-circle" style="height:40px; width:40px">
+          <div class="d-inline ml-2">
+            <small class="d-block" >Reviewed by</small>
+            <small>{{review.created_by.last_name}} {{review.created_by.first_name}}</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-4 col-lg-4">
+         <img
+            v-if="review.images[0]"
+            :src="review.images[0].link"
+            class="card-img-top rounded-lg"
+            alt="not found"
+            style="height:175px;"
+          />
+      </div>
+    </div>
+      <v-row justify="center mt-5">
         <v-dialog v-model="dialogMsg" max-width="290">
           <v-card>
             <v-card-title class="headline">Notice</v-card-title>
@@ -20,8 +45,8 @@
           </v-card>
         </v-dialog>
       </v-row>
-
     <v-form v-if="$currentUser.id" ref="form">
+      <h2>Review</h2>
       <v-text-field
         outlined
         v-model="title"
@@ -43,14 +68,12 @@
       >
         <template v-slot:selection="{ index, text }">
           <v-chip v-if="index < 2" color="deep-purple accent-4" dark label small>{{ text }}</v-chip>
-
           <span
             v-else-if="index === 2"
             class="overline grey--text text--darken-3 mx-2"
           >+{{ files.length - 2 }} File(s)</span>
         </template>
       </v-file-input>
-
       <v-textarea
         outlined
         name="input-7-4"
@@ -69,34 +92,10 @@
         <v-btn color="error" @click="clear">Clear</v-btn>
       </v-card-actions>
     </v-form>
-    <div class="row">
-      <div class="col-sm-6 col-md-4 col-lg-3" v-for="review in reviews" :key="review.id">
-        <div class="card mb-3" style="width: auto;">
-          <img
-            v-if="review.images[0]"
-            :src="review.images[0].link"
-            class="card-img-top"
-            alt="not found"
-            style="height:175px"
-          />
-          <div class="card-body">
-            <h5 class="card-title" style="overflow: hidden; height: 2rem">{{ review.title }}</h5>
-            <p
-              class="card-text"
-              style="display: block; width: 150px; overflow: hidden; white-space: nowrap; "
-            >{{ review.content }}</p>
-            <router-link
-              :to="{ name: 'review', params: { id: review.id } }"
-              class="btn btn-primary text-light"
-            >Read more ...</router-link>
-          </div>
-        </div>
-      </div>
-    </div>
       <div v-if="page" class="text-center">
-              <button v-if="load" @click="paginator" class="btn btn-primary text-light">See more</button>
-              <button v-else  @click="paginator" class="btn btn-primary text-light">See more</button>
-            </div>
+        <button v-if="load" @click="paginator" class="btn btn-primary text-light">See more</button>
+        <button v-else  @click="paginator" class="btn btn-primary text-light">See more</button>
+      </div>
   </div>
 </template>
 

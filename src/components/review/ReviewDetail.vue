@@ -1,55 +1,58 @@
 <template>
   <div class="container">
-    <div class="ml-5 mr-5">
-      <div class="text-center pb-5">
-        <div class="float-left">
+    <div class="mb-5">
+      <div class="float-left">
           <router-link
         :to="{ name: 'tour', params: { id: review.tours } }"
         class="btn btn-primary text-light mt-5 mb-5"
         >Back</router-link
       >
+      </div>
+      <h1 class="pt-3 text-center">{{ review.title }}</h1>
+    </div>
+          <div class="border border-secondary rounded-lg p-3 shadow p-3 mb-5 bg-white rounded">
+          <div class="d-flex mt-3">
+            <img src="../../assets/img/avatar.png" alt="" class="rounded-circle" style="height:85px; width:85px">
+            <div class="ml-2 mt-3 ">
+              <p>Review by</p>
+              <h4><strong>{{review.created_by.last_name}} {{review.created_by.first_name}}</strong></h4>
+            </div>
+          </div>
+          <hr>
+          <div>
+            <p class="d-inline text-secondary"><strong>{{ $showTime(review.created_at) }}</strong></p>
+            <p class="d-inline float-right text-secondary"><strong>{{ review.views }} Views</strong> </p>
+          </div>
+          <hr>
+        <div>
+          <p>{{ review.content }}</p>
         </div>
-        
-        <h1 class="pt-3">{{ review.title }}</h1>
-        
-        </div>
-      <div class="text-center">
-        <img
-          v-if="review.images[0]"
-          :src="review.images[0].link"
-          class="img-fluid"
+        <div v-for="image in review.images" :key="image.id">
+          <img
+          v-if="image"
+          :src="image.link"
+          style="height:120px; width:120px"
+          class="img-fluid rounded-lg"
           alt="Responsive image"
         />
-      </div>
-      <hr />
-      <div>
-        <strong>Created By: {{ handleEmail(review.created_by.email) }}</strong>
-        <strong style="float: right;">
-          <v-div @click="like" class="mr-6">
-            <strong class="mr-2 pb-2">{{ review.like.length }}</strong>
-            <v-btn icon>
-              <v-icon
+        </div>
+        <hr>
+        <v-div @click="like" class="mr-6">
+          <strong class="mr-2 pb-2">{{ review.like.length }}</strong>
+          <v-btn icon>
+            <v-icon
               v-if="review.like.indexOf($currentUser.id) > -1"
               medium class="pb-2"
               color="rgb(32, 120, 244)"
               >mdi-thumb-up</v-icon
             >
             <v-icon v-else medium class="pb-2" color="">mdi-thumb-up</v-icon>
-            </v-btn>
-            
-             </v-div
-          >{{ review.views }} Views
-          </strong
-        >
-        <br />
-        <small>{{ $showTime(review.created_at) }}</small>
+          </v-btn>
+          <p class="d-inline p-2">Do you like this review?</p>
+        </v-div>
       </div>
-      <hr />
-      <div class="pt-5 pb-5">{{ review.content }}</div>
-      <hr />
-
-      <Comment  v-bind:review_id="review.id"></Comment>
-    </div>
+      <br>
+    <Comment  v-bind:review_id="review.id"></Comment>
   </div>
 </template>
 

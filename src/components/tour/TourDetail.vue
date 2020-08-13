@@ -6,7 +6,7 @@
       </div>
       <h1 class="text-center">{{ tour.title }}</h1>
     </div>
-    <div class="row border border-secondary rounded-lg m-1">
+    <div class="row border border-secondary rounded-lg m-1 shadow p-3 mb-5 bg-white rounded">
       <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center border-secondary border-right">
           <img v-if="tour.images[0]" :src="tour.images[0].link" alt class="rounded-lg" width="70%" />
       </div>
@@ -21,7 +21,7 @@
         <div class="pt-5 pb-5">{{tour.policy}}</div>
         <hr>
         <p v-if="tour.duration === 1">Durations: {{tour.duration}} day</p>
-        <p v-else><strong>Durations: </strong>{{tour.duration}} days</p>
+        <p v-else><strong>Duration: </strong>{{tour.duration}} days</p>
         <hr />
         <div>
           <p class="d-inline mr-10" v-if="avg_score != 0 "><strong>Rating: </strong> <v-rating
@@ -56,11 +56,13 @@
         </div>
         <hr />
         <div class="mb-5"><strong>Tour quantity:</strong> {{tour.limit_booking}}</div>
+         <hr />
+        <div class="mb-5"><strong>Print:</strong> {{tour.amount}} $</div>
         <div v-if="status">
           <button
             class="btn btn-primary text-light mt-5 mb-5 d-inline"
             @click.stop="dialog = true"
-          >Booking</button>
+          >Book now</button>
 
           <v-dialog v-if="$currentUser.id" v-model="dialog" persistent max-width="600px">
             <v-card>
