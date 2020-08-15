@@ -37,7 +37,7 @@
       </router-link>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <form class="form-inline my-auto mt-md-0 ml-auto">
-          <v-text-field v-model="title" class="form-control mr-sm-2" type="text" placeholder="Search tours..." style="height: 35px;"></v-text-field>
+          <v-text-field v-model="value" class="form-control mr-sm-2" type="text" placeholder="Search tours..." style="height: 35px;"></v-text-field>
           <v-btn @click="searchTour" class="btn btn-outline-secondary mr-sm-2" type="button"><img src="../assets/img/search.png" alt="search"  style="width: 20px"></v-btn>
         </form>
       </div>
@@ -67,7 +67,7 @@ export default {
       makeLogout,
       loginDialogVisible: false,
       defaultLoginDialogTab: 'login',
-      title: '',
+      value: '',
       tours: []
     }
   },
@@ -80,7 +80,7 @@ export default {
 
   methods: {
     async searchTour () {
-      this.$router.push({ name: 'search', params: { content: this.title } })
+      this.$router.push({ name: 'search', params: { content: this.value } })
     },
     openLoginDialog (isLogin) {
       this.defaultLoginDialogTab = isLogin ? 'login' : 'register'

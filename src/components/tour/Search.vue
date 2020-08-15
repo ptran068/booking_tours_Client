@@ -49,8 +49,6 @@ export default {
       this.load = false
       this.page += 1
       var trs = await TourService.search(this.$route.params.content, this.page)
-      console.log(trs)
-      debugger
       if (trs.data && trs.data.results && trs.data.results.length) {
         for (var item in trs.data.results) {
           this.tours.push(trs.data.results[item])
