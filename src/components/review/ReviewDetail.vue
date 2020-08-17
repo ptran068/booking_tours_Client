@@ -37,7 +37,7 @@
         />
         </div>
         <hr>
-        <v-div @click="like" class="mr-6">
+        <div @click="like" class="mr-6">
           <strong class="mr-2 pb-2">{{ review.like.length }}</strong>
           <v-btn icon>
             <v-icon
@@ -49,10 +49,10 @@
             <v-icon v-else medium class="pb-2" color="">mdi-thumb-up</v-icon>
           </v-btn>
           <p class="d-inline p-2">Do you like this review?</p>
-        </v-div>
+        </div>
       </div>
       <br>
-    <Comment  v-bind:review_id="review.id"></Comment>
+    <Comment  v-bind:review_id="review.id" v-bind:email="review.created_by.email"></Comment>
   </div>
 </template>
 

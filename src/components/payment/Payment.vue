@@ -19,7 +19,7 @@
               >
                 <v-card-title>{{tourDetail.title}}</v-card-title>
               </v-img>
-              <v-card-subtitle class="pb-0"><strong>Booked At: </strong> {{book.created_at}}</v-card-subtitle>
+              <v-card-subtitle class="pb-0"><strong>Booked At: </strong> {{$showTime(book.created_at)}}</v-card-subtitle>
               <hr>
               <v-card-text class="text--primary">
                 <div><strong>Address: </strong>{{tourDetail.address}}</div>
