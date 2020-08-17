@@ -10,7 +10,7 @@
       </div>
       <h1 class="pt-3 text-center">{{ review.title }}</h1>
     </div>
-          <div class="border border-secondary rounded-lg p-3 shadow p-3 mb-5 bg-white rounded">
+          <div class="border border rounded-lg p-3 shadow p-3 mb-5 bg-white rounded">
           <div class="d-flex mt-3">
             <img src="../../assets/img/avatar.png" alt="" class="rounded-circle" style="height:85px; width:85px">
             <div class="ml-2 mt-3 ">

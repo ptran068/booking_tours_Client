@@ -1,25 +1,40 @@
 <template>
 <div>
-  <div class="row">
-        <div class="col-sm-6 col-md-4 col-lg-3 " v-for=" tour in tours" :key="tour.id">
-            <div class="card mb-3" style="width: auto;">
-                <img v-if="tour.images[0]"  :src="tour.images[0].link" class="card-img-top" alt="not found" style="height:175px">
-                <div class="card-body">
-                    <h4 class="card-title" style="overflow: hidden; height: 2rem">{{tour.title}}</h4>
-                    <p class="card-text" style="display: block; width: 150px; overflow: hidden; white-space: nowrap;">{{tour.description}}</p>
-                    <small class="card-text d-block mb-5" ><strong>Duration: </strong>{{tour.duration}} days</small>
-                    <small v-if="tour.avg_rating.score__avg" class="card-text d-block mb-5" ><strong>Rating: </strong>{{tour.avg_rating.score__avg}} stars</small>
-                    <small v-else class="card-text d-block mb-5" ><strong>Rating: </strong>No one has rated this!</small>
-                    <small class="card-text d-block mb-5" ><strong>Print: </strong>{{tour.amount}} $ / person </small>
-                    <router-link :to="{ name: 'tour', params: { id: tour.id }}" class="btn btn-primary text-light"> Read more ... </router-link>
-                </div>
-            </div>
+  <div class="row border-bottom mb-3" v-for=" tour in tours" :key="tour.id">
+    <div class="col-sm-9 col-md-9 col-lg-9">
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4 d-flex justify-content-center align-items-center">
+          <img v-if="tour.images[0]" :src="tour.images[0].link" alt class="rounded-lg" width="100%" />
         </div>
-    </div>
-    <div v-if="page" class="text-center">
-        <button v-if="load" @click="paginator" class="btn btn-primary text-light">See more</button>
-        <button v-else  @click="paginator" class="btn btn-primary text-light">See more</button>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          
+          <router-link :to="{ name: 'tour', params: { id: tour.id }}"><h2 class="text-center">{{ tour.title }}</h2></router-link>
+          <p class="card-text d-block mb-2" ><strong>Departure day: </strong>Daily</p>
+          <p class="card-text d-block mb-2" ><strong>Duration: </strong>{{tour.duration}} days</p>
+          <p class="card-text d-block mb-2" ><strong>Address: </strong>{{tour.address}}</p>
+          <p class="card-text d-block mb-2" ><strong>Vehicle: </strong>Car</p>
+          <p class="card-text" style=" overflow: hidden; text-overflow: ellipsis; display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;">{{tour.description}}</p>
+          
+        </div>
       </div>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3 d-flex justify-content-center align-items-center flex-column" >
+      <div class="bg-light">
+        <div class="d-flex justify-content-center align-items-center p-3">
+          <p v-if="tour.avg_rating.score__avg" class="card-text d-block mb-5" ><strong>Rating: </strong>{{tour.avg_rating.score__avg}} stars</p>
+          <p v-else class="card-text mb-5" ><strong>Rating: </strong>No one has rated this!</p>
+        </div>
+        <div class=" text-white d-flex justify-content-center align-items-center flex-column bg-info p-4">
+          <h4 class="card-text m-auto d-flex justify-content-center align-items-center" ><strong>Print: </strong>{{tour.amount}} $ / person </h4>
+          <router-link :to="{ name: 'tour', params: { id: tour.id }}" class="btn btn-warning m-3 text-dark"> Booking tour </router-link>
+        </div>
+      </div>
+    </div>
+    </div>
+          <div v-if="page" class="text-center">
+          <button v-if="load" @click="paginator" class="btn btn-primary text-light">See more</button>
+          <button v-else  @click="paginator" class="btn btn-primary text-light">See more</button>
+    </div>
 </div>
 </template>
 

@@ -14,7 +14,7 @@ class TourService extends BaseService {
   }
   
   search (value) {
-    const charge = this.request({ auth: true }).get(`/${this.entity}?q=${value}`)
+    const charge = this.request({ auth: true }).get(`/${this.entity}/?q=${value}`)
     return charge
   }
 }

@@ -6,7 +6,7 @@
       </div>
       <h1 class="text-center">{{ tour.title }}</h1>
     </div>
-    <div class="row border border-secondary rounded-lg m-1 shadow p-3 mb-5 bg-white rounded">
+    <div class="row border border rounded-lg m-1 shadow p-3 mb-5 bg-white rounded">
       <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center border-secondary border-right">
           <img v-if="tour.images[0]" :src="tour.images[0].link" alt class="rounded-lg" width="70%" />
       </div>
