@@ -2,7 +2,8 @@
   <v-card height="400px">
     <v-footer
       v-bind="localAttrs"
-      :padless="padless"
+      fixed
+      :padless="true"
     >
       <v-card
         flat

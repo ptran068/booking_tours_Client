@@ -1,12 +1,11 @@
 <template>
   <div>
-    <div>
-      <h2>Customer Comment</h2>
+    <div class="line" >
       <div
-        v-for="(item, index) in comments"
+        v-for="item in comments"
         :key="item.id"
         style="background-color: #f7f9fa"
-        class="rounded-lg p-3 mb-4"
+        class="rounded-lg pr-3 pl-3"
       >
         <section class="post-heading">
           <div class="row">
@@ -14,7 +13,7 @@
               <div class="media">
                 <div class="media-left"></div>
                 <div class="media-body">
-                  <div class="d-flex mt-3">
+                  <div class="d-flex mt-0">
                     <img
                       src="../../assets/img/avatar.png"
                       alt=""
@@ -45,12 +44,18 @@
           </div>
         </section>
         <section class="post-body">
-          <p>{{ item.content }}</p>
+          <p>{{ item.content }}.</p>
         </section>
-        <button @click="cmt=index" class="ml-5 text-primary font-italic" style="text-decoration: none;">Reply</button>
-        <ReplyToComment class="ml-15" v-bind:hidden="hidden" v-bind:review_id="review_id" v-bind:comment_id="item.id" v-bind:email="[email, item.created_by.email]" v-bind:cmt="cmt" v-bind:index="index"> </ReplyToComment>
+        <hr>
       </div>
-      <v-row justify="center">
+            
+    </div>
+    <div v-if="page" class="pl-3 pb-3">
+      <button @click="paginator" class="more btn-secondary pl-4 pr-4 text-light">
+        View more comments
+      </button>
+    </div>
+          <v-row justify="center">
         <v-dialog v-model="dialogMsg" max-width="290">
           <v-card>
             <v-card-title class="headline">Notice</v-card-title>
@@ -66,73 +71,66 @@
           </v-card>
         </v-dialog>
       </v-row>
-    </div>
-    <v-form v-if="$currentUser.id" ref="form">
+    <v-form v-if="$currentUser.id && cmt==index" ref="form">
       <v-textarea
         outlined
         name="input-7-4"
-        label="Comment"
+        label="Reply"
+        rows="1"
         v-model="content"
+        class="pb-0"
       ></v-textarea>
-      <v-card-actions>
-        <v-d>{{ status }}</v-d>
-        <v-btn
+      <v-card-actions class="pt-0 float-right">
+        <div>{{ status }}</div>
+        <br>
+        <v-btn color="error" @click="clear">Clear</v-btn>
+                <v-btn
           v-if="$currentUser.id"
           color="primary"
-          class="mr-4"
           @click="submit"
           >Submit</v-btn
         >
-        <v-btn v-else :disabled="!valid" color="primary" class="mr-4">
+        <v-btn v-else :disabled="!valid" color="primary">
           Submit
         </v-btn>
-        <v-btn color="error" @click="clear">Clear</v-btn>
       </v-card-actions>
     </v-form>
-    <div v-if="page" class="text-center">
-      <button v-if="load" @click="paginator" class="btn btn-primary text-light">
-        See more
-      </button>
-      <button v-else @click="paginator" class="btn btn-primary text-light">
-        See more
-      </button>
-    </div>
+    <br>
+
   </div>
 </template>
 
 <script>
 import { data, postComment } from "../../services/comment.service";
-import ReplyToComment from "./ReplyToComment"
 export default {
-  name: "Comments",
+  name: "ReplyComment",
   props: {
     review_id: String,
-    email: String
-  },
-  components: {
-    ReplyToComment
+    comment_id: String,
+    hidden: Boolean,
+    email: String,
+    cmt: Number,
+    index:Number
   },
   data() {
     return {
       comments: [],
-      hidden: false,
       content: "",
       status: "",
-      msg: "",
+      msg: '',
       dialogMsg: "",
       page: 0,
-      load: true,
-      cmt: Number
+      load: true
     };
   },
   async created() {
-    await this.loadComments(this.review_id);
+    await this.loadComments();
   },
   methods: {
-    async loadComments(review_id) {
+    async loadComments() {
       this.comments = [];
-      this.comments = await data.getComments(review_id);
-      if (this.comments.length) {
+      this.comments = await data.getComments(this.review_id, this.comment_id);
+      if (this.comments.length == 10 ) {
         this.page = 1;
       } else this.page = 0;
     },
@@ -149,34 +147,48 @@ export default {
         var new_comment = await postComment({
           content: this.content,
           review: this.review_id,
-          email: [this.email],
+          reply_to: this.comment_id,
+          email: this.email,
           link: this.$route.fullPath
         });
-        if (new_comment != null) {
-          this.msg = "Commented successfully";
+        if (new_comment!=null) {
+          this.msg = 'Commented successfully'
           this.$refs.form.reset();
           this.comments.push(new_comment);
           this.status = "";
-        } else {
-          this.msg = "Comment failed";
         }
-        this.dialogMsg = true;
+        else {
+          this.msg = 'Comment failed'
+        }
+        this.dialogMsg = true
       }
     },
     async paginator() {
       this.load = false;
       this.page += 1;
-      var cmts = await data.getComments(this.review_id, this.page);
+      var cmts = await data.getComments(this.review_id, this.comment_id, this.page);
       if (cmts.length) {
         for (var item in cmts) {
           this.comments.push(cmts[item]);
         }
         this.load = true;
+        if(cmts.length == 10) {
+            this.page = 1
+        }
+        else this.page = 0
       } else this.page = 0;
     }
   },
+
   computed: {}
 };
 </script>
 
-<style></style>
+<style>
+    .more {
+        border-radius: 30px;
+    }
+    .line {
+      border-left: solid 2px #000;
+    }
+</style>

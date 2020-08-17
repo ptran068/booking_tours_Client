@@ -154,7 +154,7 @@ export default {
       )
       if (new_review != null) {
         this.$refs.form.reset()
-        this.reviews.unshift(new_review)
+        this.reviews.push(new_review)
         this.status = ''
         this.msg = 'Succesfully'
         this.dialogMsg = true

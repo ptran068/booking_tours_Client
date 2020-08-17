@@ -2,10 +2,10 @@ import * as axios from 'axios'
 import { API_URL } from '../.env.js'
 import { getToken } from './auth.service'
 
-const getComments = async function (review_id, page = 1) {
+const getComments = async function (review_id, comment_id='', page = 1) {
   try {
     var offset = (page - 1) * 10
-    const response = await axios.get(`${API_URL}/comments/?offset=${offset}&review_id=` + review_id)
+    const response = await axios.get(`${API_URL}/comments/?limit=10&offset=${offset}&review_id=${review_id}&comment_id=${comment_id}`)
     let comments = parseList(response)
     return comments.results
   } catch (error) {
@@ -30,13 +30,16 @@ const options = {
   }
 }
 
-export async function postComment ({ content, review }) {
+export async function postComment ({ content, review, reply_to, email, link }) {
   try {
-    const response = await axios.post(`${API_URL}/comments/`, { content, review }, options)
+    const response = await axios.post(`${API_URL}/comments/`, { content, review, reply_to }, options)
+    if(response.status===201){
+      console.log(email)
+      axios.post(`${API_URL}/comments/mail`, { email, link }, options)
+    }
     let comment = parseComment(response)
     return comment
   } catch (error) {
-
   }
 }
 

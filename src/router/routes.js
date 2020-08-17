@@ -6,6 +6,7 @@ import Payment from '../components/payment/Payment.vue'
 import PaymentSuccess from '../components/payment/complete.vue'
 import ManageUser from '../components/user/Manage.vue'
 import SearchTour from '../components/tour/Search.vue'
+import ReviewByUser from '../components/review/ReviewByUser.vue'
 
 import { DOMAIN_TITLE } from '../.env'
 import ReviewDetail from '../components/review/ReviewDetail.vue'
@@ -53,7 +54,13 @@ export const routes = [
     meta: { title: `${DOMAIN_TITLE} | manage` }
   },
   {
-    path: '/search?search=:content',
+    path: '/user/review',
+    name: 'manage-review',
+    component: ReviewByUser,
+    meta: { title: `${DOMAIN_TITLE} | manage review` }
+  },
+  {
+    path: '/search?search=content',
     name: 'search',
     component: SearchTour,
     meta: { title: `${DOMAIN_TITLE} | results` }
